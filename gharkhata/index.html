@@ -135,6 +135,14 @@
   .syncStatus{display:flex; align-items:center; gap:7px; font-size:11.5px; color:var(--muted); margin-top:10px;}
   .toast{position:fixed; bottom:88px; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:10px 18px; border-radius:20px; font-size:12.5px; font-weight:600; z-index:99; opacity:0; transition:opacity .2s; pointer-events:none;}
   .toast.show{opacity:1;}
+  .stepVal.ghost{color:var(--muted); opacity:.65;}
+  .pendPill{font-size:9.5px; font-weight:600; color:var(--amber); border:1px solid var(--amber); border-radius:20px; padding:2px 7px; white-space:nowrap;}
+  .okBtn{padding:8px 14px; border-radius:9px; border:1.5px solid var(--pri); background:none; color:var(--pri); font-size:12px; font-weight:600; cursor:pointer;}
+  .rowBtns{display:flex; gap:8px; margin-top:10px;}
+  .miniBtn{flex:1; display:flex; align-items:center; justify-content:center; gap:5px; padding:8px; border-radius:9px; border:1px solid var(--line); background:none; color:var(--red); font-size:11.5px; font-weight:600; cursor:pointer;}
+  .miniBtn.miniOn{background:var(--red); border-color:var(--red); color:#fff;}
+  .miniBtn.miniBlue{color:var(--pri);}
+  .confirmBtn{margin-top:10px; width:100%; padding:10px; border-radius:9px; border:none; background:var(--pri); color:#fff; font-weight:600; font-size:12.5px; cursor:pointer;}
   /* recurring */
   .recRow{display:flex; align-items:center; gap:11px; padding:12px 0; border-bottom:1px solid var(--line);}
   .recRow:last-child{border-bottom:none;}
@@ -200,8 +208,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <script>
 // ══════════════ SUPABASE CONFIG — paste your values here ══════════════
-const SUPABASE_URL = 'https://didbxurnfsgzrgoznjty.supabase.co';       // e.g. https://abcd.supabase.co
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpZGJ4dXJuZnNnenJnb3puanR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5MDQ1MDEsImV4cCI6MjA5OTQ4MDUwMX0.NJIxyUsaPfkwfvZfRyM0zb-A3KJ9uYQQY5R_0B7l5N8';  // the "anon public" key
+const SUPABASE_URL = 'PASTE_YOUR_SUPABASE_URL';       // e.g. https://abcd.supabase.co
+const SUPABASE_KEY = 'PASTE_YOUR_SUPABASE_ANON_KEY';  // the "anon public" key
 // ══════════════════════════════════════════════════════════════════════
 
 const SYNC_READY = SUPABASE_URL.startsWith('http') && SUPABASE_KEY.length > 20;
@@ -327,19 +335,29 @@ const STAFF_ROLES=[
 ];
 // cat = stable key; name/emoji/color for display
 const EXP_CATS=[
-  {cat:'eatingin', name:'Eating in',    emoji:'🛵', color:'#E8794A', ph:'Blinkit, Zepto, Swiggy Instamart…'},
-  {cat:'eatingout',name:'Eating out',   emoji:'🍽️', color:'#D9534F', ph:'Restaurant name'},
-  {cat:'fuel',     name:'Fuel',         emoji:'⛽', color:'#5B8DEF', ph:'Petrol pump / vehicle'},
-  {cat:'groceries',name:'Groceries',    emoji:'🛒', color:'#2E8B57', ph:'Shop name'},
-  {cat:'ent',      name:'Entertainment',emoji:'🎬', color:'#9B5DE5', ph:'Movie, Netflix, outing…'},
-  {cat:'bills',    name:'Bills',        emoji:'⚡', color:'#F5B841', ph:'Electricity, gas, water…'},
-  {cat:'recharge', name:'Recharge',     emoji:'📱', color:'#00B8A9', ph:'Mobile, DTH, internet'},
-  {cat:'medical',  name:'Medical',      emoji:'🏥', color:'#EF476F', ph:'Doctor, chemist…'},
-  {cat:'school',   name:'School',       emoji:'🎓', color:'#118AB2', ph:'Fees, books, uniform'},
-  {cat:'shopping', name:'Shopping',     emoji:'🛍️', color:'#F78C6B', ph:'Amazon, Flipkart, store…'},
-  {cat:'travel',   name:'Travel',       emoji:'🚕', color:'#06D6A0', ph:'Uber, train, flight…'},
-  {cat:'other',    name:'Other',        emoji:'🎁', color:'#8D99AE', ph:'Details (optional)'},
+  {cat:'rent',      name:'Rent',          emoji:'🏠', color:'#2D5C8F', ph:'Landlord, society…'},
+  {cat:'emi',       name:'EMI / Loan',    emoji:'🏦', color:'#1E4269', ph:'Bank, car loan, home loan…'},
+  {cat:'sip',       name:'SIP / Invest',  emoji:'📈', color:'#2E8B57', ph:'Fund name, broker…'},
+  {cat:'insurance', name:'Insurance',     emoji:'🛡️', color:'#118AB2', ph:'LIC, health, car…'},
+  {cat:'subs',      name:'Subscription',  emoji:'📺', color:'#9B5DE5', ph:'Netflix, gym, Prime…'},
+  {cat:'creditcard',name:'Credit card',   emoji:'💳', color:'#EF476F', ph:'Which card?'},
+  {cat:'eatingin',  name:'Eating in',     emoji:'🛵', color:'#E8794A', ph:'Blinkit, Zepto, Instamart…'},
+  {cat:'eatingout', name:'Eating out',    emoji:'🍽️', color:'#D9534F', ph:'Restaurant name'},
+  {cat:'fuel',      name:'Fuel',          emoji:'⛽', color:'#5B8DEF', ph:'Petrol pump / vehicle'},
+  {cat:'groceries', name:'Groceries',     emoji:'🛒', color:'#66A182', ph:'Shop name'},
+  {cat:'ent',       name:'Entertainment', emoji:'🎬', color:'#C77DFF', ph:'Movie, outing…'},
+  {cat:'bills',     name:'Bills',         emoji:'⚡', color:'#F5B841', ph:'Electricity, gas, water…'},
+  {cat:'recharge',  name:'Recharge',      emoji:'📱', color:'#00B8A9', ph:'Mobile, DTH, internet'},
+  {cat:'medical',   name:'Medical',       emoji:'🏥', color:'#FF6B6B', ph:'Doctor, chemist…'},
+  {cat:'school',    name:'School',        emoji:'🎓', color:'#4D96FF', ph:'Fees, books, uniform'},
+  {cat:'shopping',  name:'Shopping',      emoji:'🛍️', color:'#F78C6B', ph:'Amazon, Flipkart, store…'},
+  {cat:'travel',    name:'Travel',        emoji:'🚕', color:'#06D6A0', ph:'Uber, train, flight…'},
+  {cat:'other',     name:'Other',         emoji:'🎁', color:'#8D99AE', ph:'Details (optional)'},
 ];
+// Recurring items are usually rent/EMI/SIP — show those first in the recurring form.
+const RECURRING_FIRST=['rent','emi','sip','insurance','subs','creditcard','bills','recharge','school'];
+const REC_CATS=[...RECURRING_FIRST.map(k=>EXP_CATS.find(c=>c.cat===k)).filter(Boolean),
+                ...EXP_CATS.filter(c=>!RECURRING_FIRST.includes(c.cat))];
 const CAT=(k)=>EXP_CATS.find(c=>c.cat===k)||EXP_CATS[EXP_CATS.length-1];
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 
@@ -372,22 +390,34 @@ function applyTheme(){
 function runAutoFill(){
   const st=S.settings(); if(st.autoFill===false) return;
   const today=todayKey(); const last=DB.get('gk.lastFill',null);
-  const vendors=S.vendors(); if(!vendors.length){ DB.set('gk.lastFill',today); return; }
+  const vendors=S.vendors();
+  if(!vendors.length) return;                       // nothing to fill — do NOT mark the day done
   const entries=DB.get('gk.entries',{});
-  const days = last ? daysBetween(last,today) : [today];
-  if(!days.length){ return; }
-  let changed=false;
+  // Back-fill missed days, and ALWAYS consider today (so adding a vendor later still works).
+  const days = last ? daysBetween(last,today) : [];
+  if(!days.includes(today)) days.push(today);
+  const now=new Date(); const pastNinePM = now.getHours() >= 21;
+  let changed=false, filledToday=false;
   for(const day of days){
+    // Today is only auto-filled after 9 PM — before that you still get to enter it
+    // yourself (and the "Confirm" button is right there).
+    if(day===today && !pastNinePM) continue;
     if(!entries[day]) entries[day]={};
     for(const v of vendors){
       if(v.skipUntil&&day<=v.skipUntil) continue;
       if(entries[day][v.id]!=null) continue;
       entries[day][v.id]=v.def; changed=true;
+      if(day===today) filledToday=true;
     }
   }
   if(changed) S.setEntries(entries);
-  DB.set('gk.lastFill',today);
+  // Only mark the day complete once today itself has actually been handled.
+  if(pastNinePM) DB.set('gk.lastFill',today);
+  else if(last && last!==today) DB.set('gk.lastFill', yesterdayOf(today));
+  if(filledToday) try{ new Notification('Auto-filled today’s entries ✅',{body:'Your usual quantities were added. Tap to review.',icon:'icon-192.png'}); }catch(e){}
 }
+function yesterdayOf(k){ const d=new Date(k+'T00:00:00'); d.setDate(d.getDate()-1);
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 
 // 12 PM reminder — works on Android/Chrome (installed PWA). iOS Safari has no
 // web notifications at all, so this is a no-op there (by Apple's design).
@@ -418,26 +448,64 @@ function renderVendors(){
   const today=todayKey(); const vendors=S.vendors(); const entries=S.entries();
   const tq=(id)=>{ const e=entries[today]; return e&&e[id]!=null?e[id]:null; };
   const paused=(v)=>v.skipUntil&&today<=v.skipUntil;
-  let total=0; vendors.forEach(v=>{ const q=tq(v.id); if(q!=null&&!paused(v)) total+=q*v.rate; });
-  let h=`<div class="totCard"><div class="totLabel">TODAY'S TOTAL</div><div class="totVal">₹${fmt(total)}</div>
-    <div class="totSub">${vendors.length?vendors.length+' vendor'+(vendors.length>1?'s':'')+" · tap −/+ to set today's quantity":'Add your first vendor below'}</div></div>`;
+
+  const active=vendors.filter(v=>!paused(v));
+  let total=0, pending=0, ifAccepted=0;
+  active.forEach(v=>{ const q=tq(v.id);
+    if(q!=null) total+=q*v.rate;
+    else { pending++; ifAccepted+=v.def*v.rate; } });
+
+  let h=`<div class="totCard"><div class="totLabel">TODAY'S TOTAL</div>
+    <div class="totVal">₹${fmt(total)}</div>`;
+  if(!vendors.length){
+    h+=`<div class="totSub">Add your first vendor below</div>`;
+  } else if(pending){
+    h+=`<div class="totSub">${pending} of ${active.length} not entered yet · ₹${fmt(total+ifAccepted)} if you accept the usual amounts</div>
+        <button class="confirmBtn" onclick="confirmDefaults()">✓ Confirm usual amounts</button>`;
+  } else {
+    h+=`<div class="totSub">All ${active.length} entered for today ✅</div>`;
+  }
+  h+=`</div>`;
+
   vendors.forEach(v=>{
-    const q=tq(v.id); const p=paused(v); const shown=q!=null?q:v.def;
+    const q=tq(v.id); const p=paused(v); const entered=q!=null; const shown=entered?q:v.def;
     const label=shown===0?'Skip':`${shown%1===0?shown:shown.toFixed(1)} ${v.unit}${shown>1&&!v.frac?'s':''}`;
     h+=`<div class="card"><div class="cardTop"><div class="emoji">${v.emoji}</div>
-      <div style="flex:1"><div class="vName">${esc(v.name)}</div><div class="vMeta">₹${v.rate}/${v.unit}${q!=null&&!p?' · today ₹'+fmt(q*v.rate):''}</div></div>
+      <div style="flex:1"><div class="vName">${esc(v.name)}</div>
+      <div class="vMeta">₹${v.rate}/${v.unit}${entered&&!p?' · today ₹'+fmt(q*v.rate):''}</div></div>
+      ${!p&&!entered?'<span class="pendPill">not entered</span>':''}
       <button class="dots" onclick="removeVendor('${v.id}')">⋮</button></div>`;
     if(p){ h+=`<button class="pausedRow" onclick="clearSkip('${v.id}')">⏸ Paused till ${v.skipUntil} · tap to resume</button>`; }
     else{ h+=`<div class="stepRow"><div class="stepper">
       <button class="stepBtn" onclick="stepVendor('${v.id}',${v.frac?-0.5:-1})">−</button>
-      <span class="stepVal ${shown===0?'zero':''}">${label}</span>
+      <span class="stepVal ${shown===0?'zero':''} ${entered?'':'ghost'}">${label}</span>
       ${v.frac?`<button class="stepBtn halfBtn" onclick="stepVendor('${v.id}',0.5)">+½</button>`:''}
       <button class="stepBtn" onclick="stepVendor('${v.id}',1)">+</button></div>
-      <button class="skipBtn" onclick="openSkip('${v.id}')">Skip days</button></div>`; }
+      ${entered?`<button class="skipBtn" onclick="openSkip('${v.id}')">Skip days</button>`
+                :`<button class="okBtn" onclick="acceptDefault('${v.id}')">✓ OK</button>`}</div>
+      <div class="rowBtns">
+        <button class="miniBtn ${q===0?'miniOn':''}" onclick="toggleCame('${v.id}')">✕ Didn't come</button>
+        <button class="miniBtn miniBlue" onclick="openVCal('${v.id}')">📅 Calendar</button>
+      </div>`; }
     h+=`</div>`;
   });
   h+=`<button class="addBtn" onclick="openAddVendor()">＋ Add vendor</button>`;
+  h+=`<div class="hint" style="text-align:center;margin-top:12px">Grey = not entered yet (just the usual amount). Anything still blank at 9 PM is filled in automatically.</div>`;
   $('body').innerHTML=h;
+}
+// Accept one vendor's usual amount as today's entry.
+function acceptDefault(id){
+  const v=S.vendors().find(x=>x.id===id); const today=todayKey(); const entries=S.entries();
+  entries[today]={...(entries[today]||{}),[id]:v.def}; S.setEntries(entries); renderVendors();
+}
+// Accept ALL pending vendors at once.
+function confirmDefaults(){
+  const today=todayKey(); const entries=S.entries(); const day={...(entries[today]||{})};
+  S.vendors().forEach(v=>{
+    if(v.skipUntil&&today<=v.skipUntil) return;
+    if(day[v.id]==null) day[v.id]=v.def;
+  });
+  entries[today]=day; S.setEntries(entries); renderVendors(); toast('Today confirmed');
 }
 function stepVendor(id,d){
   const today=todayKey(); const entries=S.entries(); const v=S.vendors().find(x=>x.id===id);
@@ -484,6 +552,74 @@ function applySkip(days){
   closeModal(); renderVendors();
 }
 function clearSkip(id){ S.setVendors(S.vendors().map(v=>v.id===id?{...v,skipUntil:null}:v)); renderVendors(); }
+
+
+// ---- Vendor attendance: they came, or they didn't. No half days. ----
+function toggleCame(id){
+  const v=S.vendors().find(x=>x.id===id); const today=todayKey(); const entries=S.entries();
+  const cur=(entries[today]&&entries[today][id]!=null)?entries[today][id]:null;
+  const next = cur===0 ? v.def : 0;     // tap again to undo
+  entries[today]={...(entries[today]||{}),[id]:next};
+  S.setEntries(entries); renderVendors();
+}
+
+let vcalId=null, vcalYM=null;
+function openVCal(id){ vcalId=id; vcalYM=monthOf(todayKey()); renderVCal(); }
+function vcalMove(d){ vcalYM=shiftYM(vcalYM,d); renderVCal(); }
+
+function renderVCal(){
+  const v=S.vendors().find(x=>x.id===vcalId); if(!v) return;
+  const entries=S.entries(); const [y,m]=vcalYM.split('-').map(Number);
+  const startDow=new Date(y,m-1,1).getDay(); const days=new Date(y,m,0).getDate();
+  const today=todayKey(); const curYM=monthOf(today);
+
+  let cells='', came=0, missed=0, qtySum=0, amount=0;
+  for(let i=0;i<startDow;i++) cells+='<button class="calCell blank"></button>';
+  for(let d=1;d<=days;d++){
+    const key=`${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const q=(entries[key]&&entries[key][v.id]!=null)?entries[key][v.id]:null;
+    if(q!=null){ if(q>0){ came++; qtySum+=q; amount+=q*v.rate; } else missed++; }
+    const future=key>today;
+    const cls=['calCell']; if(future)cls.push('future'); if(key===today)cls.push('today');
+    const dot = q==null ? '' : (q>0 ? 'P' : 'A');   // reuse green/red dot classes
+    cells+=`<button class="${cls.join(' ')}" ${future?'disabled':`onclick="cycleVCal('${key}')"`}>
+      <span class="calDnum">${d}</span><span class="calDot ${dot}"></span></button>`;
+  }
+
+  showModal(`<div class="modalTitle">${v.emoji} ${esc(v.name)} — attendance</div>
+    <div class="calWrap">
+      <div class="calHead">
+        <button class="calNav" onclick="vcalMove(-1)">‹</button>
+        <span class="calMon">${MONTHS[m-1]} ${y}</span>
+        <button class="calNav" onclick="vcalMove(1)" ${vcalYM>=curYM?'disabled':''}>›</button>
+      </div>
+      <div class="calDow">${DOW.map(d=>`<span>${d}</span>`).join('')}</div>
+      <div class="calGrid">${cells}</div>
+      <div class="calLegend">
+        <span class="calLg"><span class="calDot P"></span>Came</span>
+        <span class="calLg"><span class="calDot A"></span>Didn't come</span>
+        <span class="calLg"><span class="calDot"></span>Not marked</span>
+      </div>
+      <div class="calStat">
+        <div class="calStatI"><div class="calStatN" style="color:var(--green)">${came}</div><div class="calStatL">Came</div></div>
+        <div class="calStatI"><div class="calStatN" style="color:var(--red)">${missed}</div><div class="calStatL">Missed</div></div>
+        <div class="calStatI"><div class="calStatN">${Math.round(qtySum*10)/10}</div><div class="calStatL">Total ${v.unit}</div></div>
+        <div class="calStatI"><div class="calStatN" style="color:var(--pri)">₹${fmt(amount)}</div><div class="calStatL">This month</div></div>
+      </div>
+      <div class="hint">Tap a past day: not marked → came (${v.def} ${v.unit}) → didn't come → not marked.
+      For an unusual quantity on a day, use the −/+ stepper on the Vendors tab.</div>
+    </div>
+    <div class="modalBtns"><button class="saveBtn" onclick="closeModal(); renderVendors();">Done</button></div>`);
+}
+function cycleVCal(key){
+  const v=S.vendors().find(x=>x.id===vcalId); const entries=S.entries();
+  const cur=(entries[key]&&entries[key][v.id]!=null)?entries[key][v.id]:null;
+  const day={...(entries[key]||{})};
+  if(cur==null) day[v.id]=v.def;        // not marked -> came
+  else if(cur>0) day[v.id]=0;           // came -> didn't come
+  else delete day[v.id];                // didn't come -> not marked
+  entries[key]=day; S.setEntries(entries); renderVCal();
+}
 
 // ============ STAFF ============
 function renderStaff(){
@@ -913,7 +1049,8 @@ function parseShared(text){
     ['zomato','eatingout','Zomato'],['swiggy','eatingout','Swiggy'],
     ['amazon','shopping','Amazon'],['flipkart','shopping','Flipkart'],['myntra','shopping','Myntra'],
     ['uber','travel','Uber'],['ola','travel','Ola'],['rapido','travel','Rapido'],['irctc','travel','IRCTC'],
-    ['bookmyshow','ent','BookMyShow'],['netflix','ent','Netflix'],['hotstar','ent','Hotstar'],
+    ['bookmyshow','ent','BookMyShow'],['netflix','subs','Netflix'],['hotstar','subs','Hotstar'],
+    ['spotify','subs','Spotify'],['groww','sip','Groww'],['zerodha','sip','Zerodha'],['lic','insurance','LIC'],
     ['indianoil','fuel','IndianOil'],['hp petrol','fuel','HP'],['bharat petroleum','fuel','BPCL'],
     ['pharmeasy','medical','PharmEasy'],['apollo','medical','Apollo'],['1mg','medical','Tata 1mg'],
   ];
@@ -1001,15 +1138,15 @@ function deleteRec(recId){
 
 function openRecForm(recId){
   const r = recId ? S.recurring().find(x=>x.id===recId) : null;
-  const catIdx = r ? Math.max(0,EXP_CATS.findIndex(c=>c.cat===r.cat)) : 0;
-  const chips=EXP_CATS.map((c,i)=>`<button class="chip ${i===catIdx?'on':''}" onclick="pickRCat(${i})"><span class="ce">${c.emoji}</span><span class="ct">${c.name}</span></button>`).join('');
+  const catIdx = r ? Math.max(0,REC_CATS.findIndex(c=>c.cat===r.cat)) : 0;
+  const chips=REC_CATS.map((c,i)=>`<button class="chip ${i===catIdx?'on':''}" onclick="pickRCat(${i})"><span class="ce">${c.emoji}</span><span class="ct">${c.name}</span></button>`).join('');
   const freqs=FREQS.map(f=>`<button class="seg ${ (r?r.freq:'monthly')===f.f?'on':''}" id="rf_${f.f}" onclick="pickFreq('${f.f}')">${f.name}</button>`).join('');
   showModal(`<div class="modalTitle">${r?'Edit':'Add'} recurring expense</div>
     <div class="chips" id="rchips">${chips}</div>
     <label class="fLabel">Name</label>
     <input class="fInput" id="rName" placeholder="e.g. House rent, SIP, Car EMI" value="${r?esc(r.name):''}">
     <label class="fLabel">Details (optional)</label>
-    <input class="fInput" id="rNote" placeholder="Landlord, bank, fund name…" value="${r?esc(r.note||''):''}">
+    <input class="fInput" id="rNote" placeholder="${REC_CATS[catIdx].ph}" value="${r?esc(r.note||''):''}">
 
     <div class="grp">Amount</div>
     <div class="segRow">
@@ -1036,7 +1173,8 @@ function openRecForm(recId){
 }
 function pickRCat(i){ window._rc=i;
   document.querySelectorAll('#rchips .chip').forEach((c,x)=>c.classList.toggle('on',x===i));
-  if(!$('rName').value.trim()) $('rName').value=EXP_CATS[i].name; }
+  if(!$('rName').value.trim()) $('rName').value=REC_CATS[i].name;
+  const n=$('rNote'); if(n) n.placeholder=REC_CATS[i].ph; }
 function pickFreq(f){ window._rf=f;
   FREQS.forEach(x=>$('rf_'+x.f).classList.toggle('on',x.f===f)); }
 function pickVar(v){ window._rvar=v;
@@ -1051,9 +1189,9 @@ function saveRec(recId){
   const recs=S.recurring();
   if(recId){
     const r=recs.find(x=>x.id===recId);
-    Object.assign(r,{name,note,cat:EXP_CATS[window._rc].cat,amount,variable,freq:window._rf,nextDue:date});
+    Object.assign(r,{name,note,cat:REC_CATS[window._rc].cat,amount,variable,freq:window._rf,nextDue:date});
   } else {
-    recs.push({id:uid(),name,note,cat:EXP_CATS[window._rc].cat,amount,variable,freq:window._rf,nextDue:date,active:true});
+    recs.push({id:uid(),name,note,cat:REC_CATS[window._rc].cat,amount,variable,freq:window._rf,nextDue:date,active:true});
   }
   S.setRecurring(recs); closeModal(); runRecurring(); renderExpenses();
 }
