@@ -11,7 +11,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>GharKhata</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&family=Noto+Sans+Gujarati:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;600;700&family=Noto+Sans+Bengali:wght@400;600;700&family=Noto+Sans+Kannada:wght@400;600;700&family=Noto+Sans+Telugu:wght@400;600;700&display=swap');
   :root{
     --bg:#F2F5F9; --surface:#FFFFFF; --surface2:#F8FAFC; --ink:#22314A; --muted:#7C8899;
     --line:#DFE5EC; --pri:#2D5C8F; --priDeep:#1E4269; --accent:#F5B841;
@@ -208,7 +208,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <script>
 // ══════════════ SUPABASE CONFIG — paste your values here ══════════════
-const SUPABASE_URL = 'https://didbxurnfsgzrgoznjty.supabase.co';
+const SUPABASE_URL = 'https://didbxurnfsgzrgoznjty.supabase.co';       // e.g. https://abcd.supabase.co
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpZGJ4dXJuZnNnenJnb3puanR5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5MDQ1MDEsImV4cCI6MjA5OTQ4MDUwMX0.NJIxyUsaPfkwfvZfRyM0zb-A3KJ9uYQQY5R_0B7l5N8';
 // ══════════════════════════════════════════════════════════════════════
 
@@ -219,6 +219,27 @@ if (SYNC_READY && window.supabase) { try { sb = window.supabase.createClient(SUP
 // ============ STORAGE ============
 const DB={ get(k,fb){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):fb; }catch(e){ return fb; } },
            set(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} } };
+
+// ============ i18n ============
+const LANGS=[{"code": "en", "name": "English"}, {"code": "hi", "name": "हिन्दी"}, {"code": "gu", "name": "ગુજરાતી"}, {"code": "mr", "name": "मराठी"}, {"code": "kn", "name": "ಕನ್ನಡ"}, {"code": "te", "name": "తెలుగు"}, {"code": "ta", "name": "தமிழ்"}, {"code": "bn", "name": "বাংলা"}];
+const STRINGS={"en": {"app.tagline": "Household ledger", "tab.vendors": "Vendors", "tab.staff": "Staff", "tab.expenses": "Expenses", "tab.summary": "Summary", "v.subtitle": "Today's deliveries & daily help", "v.todayTotal": "TODAY'S TOTAL", "v.addFirst": "Add your first vendor below", "v.notEntered": "not entered", "v.pending": "{n} of {t} not entered yet", "v.ifAccept": "₹{a} if you accept the usual amounts", "v.confirmAll": "Confirm usual amounts", "v.allEntered": "All {n} entered for today ✅", "v.addVendor": "Add vendor", "v.skipDays": "Skip days", "v.didntCome": "Didn't come", "v.came": "Came", "v.calendar": "Calendar", "v.ok": "OK", "v.skip": "Skip", "v.pausedTill": "Paused till {d} · tap to resume", "v.ghostHint": "Grey = not entered yet (just the usual amount). Anything still blank at 9 PM is filled in automatically.", "v.attendance": "attendance", "v.notMarked": "Not marked", "v.missed": "Missed", "v.thisMonth": "This month", "vt.milk": "Milk", "vt.tiffin": "Tiffin", "vt.newspaper": "Newspaper", "vt.ironing": "Ironing", "vt.car": "Car cleaning", "vt.water": "Water can", "vt.vegetables": "Vegetables", "vt.maidhelp": "Extra help", "vt.custom": "Custom", "u.litre": "litre", "u.meal": "meal", "u.day": "day", "u.piece": "piece", "u.wash": "wash", "u.can": "can", "u.kg": "kg", "u.visit": "visit", "u.unit": "unit", "s.subtitle": "Daily attendance & salary", "s.addStaff": "Add staff", "s.empty": "Add your maid, cook, driver and more to track attendance and salary.", "s.present": "Present", "s.half": "Half", "s.absent": "Absent", "s.salary": "Monthly salary", "s.paidLeaves": "Paid leaves/mo", "s.advance": "Give advance", "s.unpaidLeaves": "Unpaid leaves", "s.deduction": "Deduction", "s.leaveHint": "Absences beyond paid leaves are auto-deducted (salary ÷ 30 per day).", "sr.maid": "Maid", "sr.cook": "Cook", "sr.driver": "Driver", "sr.nanny": "Nanny", "sr.garden": "Gardener", "sr.guard": "Guard", "sr.custom": "Other", "e.subtitle": "Track every household spend", "e.add": "Add expense", "e.whatFor": "What was it for?", "e.details": "Details (optional)", "e.amount": "Amount (₹)", "e.date": "Date", "e.all": "All", "e.topCat": "TOP SPENDING CATEGORY", "e.empty": "No expenses this month yet.", "c.rent": "Rent", "c.emi": "EMI / Loan", "c.sip": "SIP / Invest", "c.insurance": "Insurance", "c.subs": "Subscription", "c.creditcard": "Credit card", "c.eatingin": "Eating in", "c.eatingout": "Eating out", "c.fuel": "Fuel", "c.groceries": "Groceries", "c.ent": "Entertainment", "c.bills": "Bills", "c.recharge": "Recharge", "c.medical": "Medical", "c.school": "School", "c.shopping": "Shopping", "c.travel": "Travel", "c.other": "Other", "r.title": "Recurring", "r.add": "Add recurring expense", "r.empty": "Add rent, SIP, EMI, credit-card bills and subscriptions once — they'll be added automatically every time they're due.", "r.fixed": "Fixed", "r.varies": "Varies", "r.repeats": "Repeats", "r.weekly": "Weekly", "r.monthly": "Monthly", "r.quarterly": "Quarterly", "r.yearly": "Yearly", "r.dueTitle": "{n} is due", "r.enterAmount": "Enter amount", "r.skipThisTime": "Skip this time", "r.nextDue": "next {d}", "r.paused": "paused", "sm.subtitle": "Your household spending", "sm.thisMonth": "This Month", "sm.thisYear": "This Year", "sm.total": "TOTAL", "sm.whereMoney": "Where the money went", "sm.byCategory": "Expenses by category", "sm.whatsapp": "Send summary on WhatsApp", "sm.upi": "Pay via UPI", "sm.pdf": "Download PDF report", "sm.empty": "No entries yet for {p}.", "st.title": "Settings", "st.language": "Language", "st.theme": "Theme", "st.auto": "Auto", "st.light": "Light", "st.dark": "Dark", "st.reminder": "Daily reminder — 12 PM", "st.autofill": "Auto-fill — 9 PM", "st.familySync": "Family sync", "st.createCode": "Create code", "st.enterCode": "Enter code", "st.removeCode": "Remove code", "st.copy": "Copy", "st.share": "Share", "st.backup": "Backup", "st.restore": "Restore", "st.done": "Done", "k.cancel": "Cancel", "k.save": "Save", "k.add": "Add", "k.edit": "Edit", "k.delete": "Delete", "k.remove": "Remove", "k.name": "Name", "k.rate": "Rate", "k.defaultQty": "Default qty"}, "hi": {"app.tagline": "घर का खाता", "tab.vendors": "वेंडर", "tab.staff": "स्टाफ", "tab.expenses": "खर्च", "tab.summary": "सारांश", "v.subtitle": "आज की डिलीवरी", "v.todayTotal": "आज का कुल", "v.addFirst": "नीचे पहला वेंडर जोड़ें", "v.notEntered": "दर्ज नहीं", "v.pending": "{t} में से {n} दर्ज नहीं", "v.ifAccept": "रोज़ वाली मात्रा मानें तो ₹{a}", "v.confirmAll": "रोज़ वाली मात्रा पक्की करें", "v.allEntered": "सभी {n} आज दर्ज ✅", "v.addVendor": "वेंडर जोड़ें", "v.skipDays": "दिन छोड़ें", "v.didntCome": "नहीं आया", "v.came": "आया", "v.calendar": "कैलेंडर", "v.ok": "ठीक", "v.skip": "छोड़ें", "v.pausedTill": "{d} तक रुका · फिर चालू करें", "v.ghostHint": "धूसर = अभी दर्ज नहीं (सिर्फ़ रोज़ वाली मात्रा)। रात 9 बजे तक खाली रहा तो अपने आप भर जाएगा।", "v.attendance": "हाज़िरी", "v.notMarked": "कुछ नहीं", "v.missed": "नहीं आया", "v.thisMonth": "इस महीने", "vt.milk": "दूध", "vt.tiffin": "टिफ़िन", "vt.newspaper": "अख़बार", "vt.ironing": "इस्त्री", "vt.car": "गाड़ी सफ़ाई", "vt.water": "पानी का कैन", "vt.vegetables": "सब्ज़ी", "vt.maidhelp": "अतिरिक्त मदद", "vt.custom": "अन्य", "u.litre": "लीटर", "u.meal": "खाना", "u.day": "दिन", "u.piece": "कपड़ा", "u.wash": "धुलाई", "u.can": "कैन", "u.kg": "किलो", "u.visit": "फेरा", "u.unit": "यूनिट", "s.subtitle": "रोज़ की हाज़िरी और तनख़्वाह", "s.addStaff": "स्टाफ जोड़ें", "s.empty": "हाज़िरी और तनख़्वाह के लिए मेड, कुक, ड्राइवर जोड़ें।", "s.present": "हाज़िर", "s.half": "आधा दिन", "s.absent": "ग़ैरहाज़िर", "s.salary": "महीने की तनख़्वाह", "s.paidLeaves": "सवेतन छुट्टी/माह", "s.advance": "एडवांस दें", "s.unpaidLeaves": "बिना वेतन छुट्टी", "s.deduction": "कटौती", "s.leaveHint": "सवेतन छुट्टी से ज़्यादा ग़ैरहाज़िरी अपने आप कटती है (तनख़्वाह ÷ 30 प्रति दिन)।", "sr.maid": "मेड", "sr.cook": "कुक", "sr.driver": "ड्राइवर", "sr.nanny": "आया", "sr.garden": "माली", "sr.guard": "गार्ड", "sr.custom": "अन्य", "e.subtitle": "हर घरेलू ख़र्च", "e.add": "ख़र्च जोड़ें", "e.whatFor": "किस लिए?", "e.details": "विवरण (वैकल्पिक)", "e.amount": "रक़म (₹)", "e.date": "तारीख़", "e.all": "सभी", "e.topCat": "सबसे ज़्यादा ख़र्च", "e.empty": "इस महीने कोई ख़र्च नहीं।", "c.rent": "किराया", "c.emi": "EMI / क़र्ज़", "c.sip": "SIP / निवेश", "c.insurance": "बीमा", "c.subs": "सब्सक्रिप्शन", "c.creditcard": "क्रेडिट कार्ड", "c.eatingin": "घर पर मंगाया", "c.eatingout": "बाहर खाया", "c.fuel": "पेट्रोल", "c.groceries": "किराना", "c.ent": "मनोरंजन", "c.bills": "बिल", "c.recharge": "रिचार्ज", "c.medical": "दवाई", "c.school": "स्कूल", "c.shopping": "ख़रीदारी", "c.travel": "सफ़र", "c.other": "अन्य", "r.title": "हर बार", "r.add": "हर बार वाला ख़र्च जोड़ें", "r.empty": "किराया, SIP, EMI, क्रेडिट कार्ड बिल एक बार जोड़ें — हर बार अपने आप जुड़ जाएँगे।", "r.fixed": "तय", "r.varies": "बदलती है", "r.repeats": "कब-कब", "r.weekly": "हर हफ़्ते", "r.monthly": "हर महीने", "r.quarterly": "हर 3 महीने", "r.yearly": "हर साल", "r.dueTitle": "{n} बाक़ी है", "r.enterAmount": "रक़म डालें", "r.skipThisTime": "इस बार छोड़ें", "r.nextDue": "अगला {d}", "r.paused": "रुका", "sm.subtitle": "आपका घरेलू ख़र्च", "sm.thisMonth": "इस महीने", "sm.thisYear": "इस साल", "sm.total": "कुल", "sm.whereMoney": "पैसा कहाँ गया", "sm.byCategory": "श्रेणी के हिसाब से ख़र्च", "sm.whatsapp": "WhatsApp पर भेजें", "sm.upi": "UPI से भुगतान", "sm.pdf": "PDF रिपोर्ट डाउनलोड", "sm.empty": "{p} के लिए कुछ नहीं।", "st.title": "सेटिंग", "st.language": "भाषा", "st.theme": "थीम", "st.auto": "ऑटो", "st.light": "हल्का", "st.dark": "गहरा", "st.reminder": "रोज़ याद दिलाएँ — दोपहर 12", "st.autofill": "अपने आप भरें — रात 9", "st.familySync": "परिवार सिंक", "st.createCode": "कोड बनाएँ", "st.enterCode": "कोड डालें", "st.removeCode": "कोड हटाएँ", "st.copy": "कॉपी", "st.share": "शेयर", "st.backup": "बैकअप", "st.restore": "रीस्टोर", "st.done": "हो गया", "k.cancel": "रद्द", "k.save": "सेव", "k.add": "जोड़ें", "k.edit": "बदलें", "k.delete": "हटाएँ", "k.remove": "हटाएँ", "k.name": "नाम", "k.rate": "दर", "k.defaultQty": "रोज़ की मात्रा"}, "gu": {"app.tagline": "ઘરનું ખાતું", "tab.vendors": "વેન્ડર", "tab.staff": "સ્ટાફ", "tab.expenses": "ખર્ચ", "tab.summary": "સારાંશ", "v.subtitle": "આજની ડિલિવરી", "v.todayTotal": "આજનું કુલ", "v.addFirst": "નીચે પહેલો વેન્ડર ઉમેરો", "v.notEntered": "નોંધાયું નથી", "v.pending": "{t} માંથી {n} નોંધાયા નથી", "v.ifAccept": "રોજની માત્રા માનો તો ₹{a}", "v.confirmAll": "રોજની માત્રા પાકી કરો", "v.allEntered": "બધા {n} આજે નોંધાયા ✅", "v.addVendor": "વેન્ડર ઉમેરો", "v.skipDays": "દિવસ છોડો", "v.didntCome": "આવ્યો નથી", "v.came": "આવ્યો", "v.calendar": "કેલેન્ડર", "v.ok": "ઠીક", "v.skip": "છોડો", "v.pausedTill": "{d} સુધી બંધ · ફરી ચાલુ કરો", "v.ghostHint": "ગ્રે = હજી નોંધાયું નથી (ફક્ત રોજની માત્રા). રાત્રે 9 વાગ્યા સુધી ખાલી રહેશે તો આપોઆપ ભરાઈ જશે.", "v.attendance": "હાજરી", "v.notMarked": "કંઈ નહીં", "v.missed": "આવ્યો નથી", "v.thisMonth": "આ મહિને", "vt.milk": "દૂધ", "vt.tiffin": "ટિફિન", "vt.newspaper": "છાપું", "vt.ironing": "ઇસ્ત્રી", "vt.car": "ગાડી સફાઈ", "vt.water": "પાણીનું કેન", "vt.vegetables": "શાકભાજી", "vt.maidhelp": "વધારાની મદદ", "vt.custom": "અન્ય", "u.litre": "લિટર", "u.meal": "ભોજન", "u.day": "દિવસ", "u.piece": "કપડું", "u.wash": "ધોવાણ", "u.can": "કેન", "u.kg": "કિલો", "u.visit": "ફેરો", "u.unit": "યુનિટ", "s.subtitle": "રોજની હાજરી અને પગાર", "s.addStaff": "સ્ટાફ ઉમેરો", "s.empty": "હાજરી અને પગાર માટે કામવાળી, રસોઈયા, ડ્રાઈવર ઉમેરો.", "s.present": "હાજર", "s.half": "અડધો દિવસ", "s.absent": "ગેરહાજર", "s.salary": "મહિનાનો પગાર", "s.paidLeaves": "પગારવાળી રજા/મહિનો", "s.advance": "એડવાન્સ આપો", "s.unpaidLeaves": "પગાર વગરની રજા", "s.deduction": "કપાત", "s.leaveHint": "પગારવાળી રજા કરતાં વધુ ગેરહાજરી આપોઆપ કપાય છે (પગાર ÷ 30 પ્રતિ દિવસ).", "sr.maid": "કામવાળી", "sr.cook": "રસોઈયા", "sr.driver": "ડ્રાઈવર", "sr.nanny": "આયા", "sr.garden": "માળી", "sr.guard": "ગાર્ડ", "sr.custom": "અન્ય", "e.subtitle": "દરેક ઘરખર્ચ", "e.add": "ખર્ચ ઉમેરો", "e.whatFor": "શેના માટે?", "e.details": "વિગત (વૈકલ્પિક)", "e.amount": "રકમ (₹)", "e.date": "તારીખ", "e.all": "બધા", "e.topCat": "સૌથી વધુ ખર્ચ", "e.empty": "આ મહિને કોઈ ખર્ચ નથી.", "c.rent": "ભાડું", "c.emi": "EMI / લોન", "c.sip": "SIP / રોકાણ", "c.insurance": "વીમો", "c.subs": "સબ્સ્ક્રિપ્શન", "c.creditcard": "ક્રેડિટ કાર્ડ", "c.eatingin": "ઘરે મંગાવ્યું", "c.eatingout": "બહાર જમ્યા", "c.fuel": "પેટ્રોલ", "c.groceries": "કરિયાણું", "c.ent": "મનોરંજન", "c.bills": "બિલ", "c.recharge": "રિચાર્જ", "c.medical": "દવા", "c.school": "શાળા", "c.shopping": "ખરીદી", "c.travel": "મુસાફરી", "c.other": "અન્ય", "r.title": "દર વખતે", "r.add": "દર વખતનો ખર્ચ ઉમેરો", "r.empty": "ભાડું, SIP, EMI, ક્રેડિટ કાર્ડ બિલ એકવાર ઉમેરો — દર વખતે આપોઆપ ઉમેરાશે.", "r.fixed": "નક્કી", "r.varies": "બદલાય છે", "r.repeats": "ક્યારે-ક્યારે", "r.weekly": "દર અઠવાડિયે", "r.monthly": "દર મહિને", "r.quarterly": "દર 3 મહિને", "r.yearly": "દર વર્ષે", "r.dueTitle": "{n} બાકી છે", "r.enterAmount": "રકમ નાખો", "r.skipThisTime": "આ વખતે છોડો", "r.nextDue": "આગલું {d}", "r.paused": "બંધ", "sm.subtitle": "તમારો ઘરખર્ચ", "sm.thisMonth": "આ મહિને", "sm.thisYear": "આ વર્ષે", "sm.total": "કુલ", "sm.whereMoney": "પૈસા ક્યાં ગયા", "sm.byCategory": "શ્રેણી પ્રમાણે ખર્ચ", "sm.whatsapp": "WhatsApp પર મોકલો", "sm.upi": "UPI થી ચૂકવો", "sm.pdf": "PDF રિપોર્ટ ડાઉનલોડ", "sm.empty": "{p} માટે કંઈ નથી.", "st.title": "સેટિંગ", "st.language": "ભાષા", "st.theme": "થીમ", "st.auto": "ઓટો", "st.light": "હળવું", "st.dark": "ઘેરું", "st.reminder": "રોજ યાદ કરાવો — બપોરે 12", "st.autofill": "આપોઆપ ભરો — રાત્રે 9", "st.familySync": "પરિવાર સિંક", "st.createCode": "કોડ બનાવો", "st.enterCode": "કોડ નાખો", "st.removeCode": "કોડ કાઢો", "st.copy": "કૉપી", "st.share": "શેર", "st.backup": "બેકઅપ", "st.restore": "રીસ્ટોર", "st.done": "થઈ ગયું", "k.cancel": "રદ", "k.save": "સેવ", "k.add": "ઉમેરો", "k.edit": "બદલો", "k.delete": "કાઢો", "k.remove": "કાઢો", "k.name": "નામ", "k.rate": "દર", "k.defaultQty": "રોજની માત્રા"}, "mr": {"app.tagline": "घरचा हिशोब", "tab.vendors": "विक्रेते", "tab.staff": "कर्मचारी", "tab.expenses": "खर्च", "tab.summary": "सारांश", "v.subtitle": "आजची डिलिव्हरी", "v.todayTotal": "आजचे एकूण", "v.addFirst": "खाली पहिला विक्रेता जोडा", "v.notEntered": "नोंद नाही", "v.pending": "{t} पैकी {n} नोंद नाही", "v.ifAccept": "नेहमीची मात्रा धरल्यास ₹{a}", "v.confirmAll": "नेहमीची मात्रा निश्चित करा", "v.allEntered": "सर्व {n} आज नोंदले ✅", "v.addVendor": "विक्रेता जोडा", "v.skipDays": "दिवस वगळा", "v.didntCome": "आला नाही", "v.came": "आला", "v.calendar": "कॅलेंडर", "v.ok": "ठीक", "v.skip": "वगळा", "v.pausedTill": "{d} पर्यंत थांबवले · पुन्हा सुरू करा", "v.ghostHint": "करडा = अजून नोंद नाही (फक्त नेहमीची मात्रा). रात्री ९ पर्यंत रिकामे राहिल्यास आपोआप भरले जाईल.", "v.attendance": "हजेरी", "v.notMarked": "काहीच नाही", "v.missed": "आला नाही", "v.thisMonth": "या महिन्यात", "vt.milk": "दूध", "vt.tiffin": "डबा", "vt.newspaper": "पेपर", "vt.ironing": "इस्त्री", "vt.car": "गाडी साफसफाई", "vt.water": "पाण्याचा कॅन", "vt.vegetables": "भाजी", "vt.maidhelp": "अतिरिक्त मदत", "vt.custom": "इतर", "u.litre": "लिटर", "u.meal": "जेवण", "u.day": "दिवस", "u.piece": "कपडा", "u.wash": "धुलाई", "u.can": "कॅन", "u.kg": "किलो", "u.visit": "फेरी", "u.unit": "युनिट", "s.subtitle": "रोजची हजेरी आणि पगार", "s.addStaff": "कर्मचारी जोडा", "s.empty": "हजेरी व पगारासाठी मोलकरीण, स्वयंपाकी, ड्रायव्हर जोडा.", "s.present": "हजर", "s.half": "अर्धा दिवस", "s.absent": "गैरहजर", "s.salary": "महिन्याचा पगार", "s.paidLeaves": "पगारी सुट्टी/महिना", "s.advance": "उचल द्या", "s.unpaidLeaves": "बिनपगारी सुट्टी", "s.deduction": "कपात", "s.leaveHint": "पगारी सुट्टीपेक्षा जास्त गैरहजेरी आपोआप कापली जाते (पगार ÷ ३० प्रतिदिन).", "sr.maid": "मोलकरीण", "sr.cook": "स्वयंपाकी", "sr.driver": "ड्रायव्हर", "sr.nanny": "आया", "sr.garden": "माळी", "sr.guard": "सुरक्षारक्षक", "sr.custom": "इतर", "e.subtitle": "प्रत्येक घरखर्च", "e.add": "खर्च जोडा", "e.whatFor": "कशासाठी?", "e.details": "तपशील (ऐच्छिक)", "e.amount": "रक्कम (₹)", "e.date": "दिनांक", "e.all": "सर्व", "e.topCat": "सर्वाधिक खर्च", "e.empty": "या महिन्यात खर्च नाही.", "c.rent": "भाडे", "c.emi": "EMI / कर्ज", "c.sip": "SIP / गुंतवणूक", "c.insurance": "विमा", "c.subs": "सदस्यता", "c.creditcard": "क्रेडिट कार्ड", "c.eatingin": "घरी मागवले", "c.eatingout": "बाहेर जेवलो", "c.fuel": "इंधन", "c.groceries": "किराणा", "c.ent": "मनोरंजन", "c.bills": "बिल", "c.recharge": "रिचार्ज", "c.medical": "औषध", "c.school": "शाळा", "c.shopping": "खरेदी", "c.travel": "प्रवास", "c.other": "इतर", "r.title": "दर वेळी", "r.add": "दर वेळचा खर्च जोडा", "r.empty": "भाडे, SIP, EMI, क्रेडिट कार्ड बिल एकदा जोडा — दर वेळी आपोआप जोडले जातील.", "r.fixed": "ठरलेली", "r.varies": "बदलते", "r.repeats": "किती वेळा", "r.weekly": "दर आठवड्याला", "r.monthly": "दर महिन्याला", "r.quarterly": "दर ३ महिन्यांनी", "r.yearly": "दर वर्षी", "r.dueTitle": "{n} बाकी आहे", "r.enterAmount": "रक्कम टाका", "r.skipThisTime": "यावेळी वगळा", "r.nextDue": "पुढील {d}", "r.paused": "थांबवले", "sm.subtitle": "तुमचा घरखर्च", "sm.thisMonth": "या महिन्यात", "sm.thisYear": "या वर्षी", "sm.total": "एकूण", "sm.whereMoney": "पैसे कुठे गेले", "sm.byCategory": "प्रकारानुसार खर्च", "sm.whatsapp": "WhatsApp वर पाठवा", "sm.upi": "UPI ने भरा", "sm.pdf": "PDF अहवाल डाउनलोड", "sm.empty": "{p} साठी काहीच नाही.", "st.title": "सेटिंग", "st.language": "भाषा", "st.theme": "थीम", "st.auto": "ऑटो", "st.light": "फिकट", "st.dark": "गडद", "st.reminder": "रोज आठवण — दुपारी १२", "st.autofill": "आपोआप भरा — रात्री ९", "st.familySync": "कुटुंब सिंक", "st.createCode": "कोड तयार करा", "st.enterCode": "कोड टाका", "st.removeCode": "कोड काढा", "st.copy": "कॉपी", "st.share": "शेअर", "st.backup": "बॅकअप", "st.restore": "रिस्टोअर", "st.done": "झाले", "k.cancel": "रद्द", "k.save": "सेव्ह", "k.add": "जोडा", "k.edit": "बदला", "k.delete": "काढा", "k.remove": "काढा", "k.name": "नाव", "k.rate": "दर", "k.defaultQty": "नेहमीची मात्रा"}, "kn": {"app.tagline": "ಮನೆಯ ಲೆಕ್ಕ", "tab.vendors": "ವ್ಯಾಪಾರಿ", "tab.staff": "ಸಿಬ್ಬಂದಿ", "tab.expenses": "ಖರ್ಚು", "tab.summary": "ಸಾರಾಂಶ", "v.subtitle": "ಇಂದಿನ ಡೆಲಿವರಿ", "v.todayTotal": "ಇಂದಿನ ಒಟ್ಟು", "v.addFirst": "ಕೆಳಗೆ ಮೊದಲ ವ್ಯಾಪಾರಿ ಸೇರಿಸಿ", "v.notEntered": "ನಮೂದಿಸಿಲ್ಲ", "v.pending": "{t} ರಲ್ಲಿ {n} ನಮೂದಿಸಿಲ್ಲ", "v.ifAccept": "ಎಂದಿನ ಪ್ರಮಾಣ ಒಪ್ಪಿದರೆ ₹{a}", "v.confirmAll": "ಎಂದಿನ ಪ್ರಮಾಣ ದೃಢೀಕರಿಸಿ", "v.allEntered": "ಎಲ್ಲಾ {n} ಇಂದು ನಮೂದಿಸಲಾಗಿದೆ ✅", "v.addVendor": "ವ್ಯಾಪಾರಿ ಸೇರಿಸಿ", "v.skipDays": "ದಿನ ಬಿಟ್ಟುಬಿಡಿ", "v.didntCome": "ಬಂದಿಲ್ಲ", "v.came": "ಬಂದಿದೆ", "v.calendar": "ಕ್ಯಾಲೆಂಡರ್", "v.ok": "ಸರಿ", "v.skip": "ಬಿಡಿ", "v.pausedTill": "{d} ವರೆಗೆ ವಿರಾಮ · ಮತ್ತೆ ಪ್ರಾರಂಭಿಸಿ", "v.ghostHint": "ಬೂದು = ಇನ್ನೂ ನಮೂದಿಸಿಲ್ಲ (ಎಂದಿನ ಪ್ರಮಾಣ ಮಾತ್ರ). ರಾತ್ರಿ 9ರವರೆಗೆ ಖಾಲಿ ಇದ್ದರೆ ತಾನಾಗಿಯೇ ತುಂಬುತ್ತದೆ.", "v.attendance": "ಹಾಜರಾತಿ", "v.notMarked": "ಗುರುತಿಸಿಲ್ಲ", "v.missed": "ತಪ್ಪಿದೆ", "v.thisMonth": "ಈ ತಿಂಗಳು", "vt.milk": "ಹಾಲು", "vt.tiffin": "ಟಿಫಿನ್", "vt.newspaper": "ಪತ್ರಿಕೆ", "vt.ironing": "ಇಸ್ತ್ರಿ", "vt.car": "ಕಾರು ಸ್ವಚ್ಛತೆ", "vt.water": "ನೀರಿನ ಕ್ಯಾನ್", "vt.vegetables": "ತರಕಾರಿ", "vt.maidhelp": "ಹೆಚ್ಚುವರಿ ಸಹಾಯ", "vt.custom": "ಇತರ", "u.litre": "ಲೀಟರ್", "u.meal": "ಊಟ", "u.day": "ದಿನ", "u.piece": "ತುಂಡು", "u.wash": "ತೊಳೆತ", "u.can": "ಕ್ಯಾನ್", "u.kg": "ಕೆಜಿ", "u.visit": "ಭೇಟಿ", "u.unit": "ಘಟಕ", "s.subtitle": "ದೈನಂದಿನ ಹಾಜರಾತಿ ಮತ್ತು ಸಂಬಳ", "s.addStaff": "ಸಿಬ್ಬಂದಿ ಸೇರಿಸಿ", "s.empty": "ಹಾಜರಾತಿ ಮತ್ತು ಸಂಬಳಕ್ಕಾಗಿ ಕೆಲಸದವರು, ಅಡುಗೆಯವರು, ಚಾಲಕರನ್ನು ಸೇರಿಸಿ.", "s.present": "ಹಾಜರು", "s.half": "ಅರ್ಧ ದಿನ", "s.absent": "ಗೈರು", "s.salary": "ಮಾಸಿಕ ಸಂಬಳ", "s.paidLeaves": "ಸಂಬಳಸಹಿತ ರಜೆ/ತಿಂಗಳು", "s.advance": "ಮುಂಗಡ ನೀಡಿ", "s.unpaidLeaves": "ಸಂಬಳರಹಿತ ರಜೆ", "s.deduction": "ಕಡಿತ", "s.leaveHint": "ಸಂಬಳಸಹಿತ ರಜೆಗಿಂತ ಹೆಚ್ಚಿನ ಗೈರುಹಾಜರಿ ತಾನಾಗಿಯೇ ಕಡಿತವಾಗುತ್ತದೆ (ಸಂಬಳ ÷ 30 ಪ್ರತಿ ದಿನ).", "sr.maid": "ಕೆಲಸದವರು", "sr.cook": "ಅಡುಗೆಯವರು", "sr.driver": "ಚಾಲಕ", "sr.nanny": "ದಾದಿ", "sr.garden": "ತೋಟಗಾರ", "sr.guard": "ಕಾವಲುಗಾರ", "sr.custom": "ಇತರ", "e.subtitle": "ಪ್ರತಿ ಮನೆ ಖರ್ಚು", "e.add": "ಖರ್ಚು ಸೇರಿಸಿ", "e.whatFor": "ಯಾವುದಕ್ಕಾಗಿ?", "e.details": "ವಿವರ (ಐಚ್ಛಿಕ)", "e.amount": "ಮೊತ್ತ (₹)", "e.date": "ದಿನಾಂಕ", "e.all": "ಎಲ್ಲಾ", "e.topCat": "ಅತಿ ಹೆಚ್ಚು ಖರ್ಚು", "e.empty": "ಈ ತಿಂಗಳು ಖರ್ಚು ಇಲ್ಲ.", "c.rent": "ಬಾಡಿಗೆ", "c.emi": "EMI / ಸಾಲ", "c.sip": "SIP / ಹೂಡಿಕೆ", "c.insurance": "ವಿಮೆ", "c.subs": "ಚಂದಾದಾರಿಕೆ", "c.creditcard": "ಕ್ರೆಡಿಟ್ ಕಾರ್ಡ್", "c.eatingin": "ಮನೆಗೆ ತರಿಸಿದ್ದು", "c.eatingout": "ಹೊರಗೆ ಊಟ", "c.fuel": "ಇಂಧನ", "c.groceries": "ದಿನಸಿ", "c.ent": "ಮನರಂಜನೆ", "c.bills": "ಬಿಲ್", "c.recharge": "ರೀಚಾರ್ಜ್", "c.medical": "ವೈದ್ಯಕೀಯ", "c.school": "ಶಾಲೆ", "c.shopping": "ಶಾಪಿಂಗ್", "c.travel": "ಪ್ರಯಾಣ", "c.other": "ಇತರ", "r.title": "ಪುನರಾವರ್ತಿತ", "r.add": "ಪುನರಾವರ್ತಿತ ಖರ್ಚು ಸೇರಿಸಿ", "r.empty": "ಬಾಡಿಗೆ, SIP, EMI, ಕ್ರೆಡಿಟ್ ಕಾರ್ಡ್ ಬಿಲ್ ಒಮ್ಮೆ ಸೇರಿಸಿ — ಪ್ರತಿ ಬಾರಿ ತಾನಾಗಿಯೇ ಸೇರುತ್ತದೆ.", "r.fixed": "ನಿಗದಿತ", "r.varies": "ಬದಲಾಗುತ್ತದೆ", "r.repeats": "ಎಷ್ಟು ಬಾರಿ", "r.weekly": "ವಾರಕ್ಕೊಮ್ಮೆ", "r.monthly": "ತಿಂಗಳಿಗೊಮ್ಮೆ", "r.quarterly": "3 ತಿಂಗಳಿಗೊಮ್ಮೆ", "r.yearly": "ವರ್ಷಕ್ಕೊಮ್ಮೆ", "r.dueTitle": "{n} ಬಾಕಿ ಇದೆ", "r.enterAmount": "ಮೊತ್ತ ನಮೂದಿಸಿ", "r.skipThisTime": "ಈ ಬಾರಿ ಬಿಡಿ", "r.nextDue": "ಮುಂದಿನ {d}", "r.paused": "ವಿರಾಮ", "sm.subtitle": "ನಿಮ್ಮ ಮನೆ ಖರ್ಚು", "sm.thisMonth": "ಈ ತಿಂಗಳು", "sm.thisYear": "ಈ ವರ್ಷ", "sm.total": "ಒಟ್ಟು", "sm.whereMoney": "ಹಣ ಎಲ್ಲಿ ಹೋಯಿತು", "sm.byCategory": "ವರ್ಗದ ಪ್ರಕಾರ ಖರ್ಚು", "sm.whatsapp": "WhatsApp ನಲ್ಲಿ ಕಳುಹಿಸಿ", "sm.upi": "UPI ಮೂಲಕ ಪಾವತಿಸಿ", "sm.pdf": "PDF ವರದಿ ಡೌನ್‌ಲೋಡ್", "sm.empty": "{p} ಗೆ ಏನೂ ಇಲ್ಲ.", "st.title": "ಸೆಟ್ಟಿಂಗ್", "st.language": "ಭಾಷೆ", "st.theme": "ಥೀಮ್", "st.auto": "ಸ್ವಯಂ", "st.light": "ತಿಳಿ", "st.dark": "ಕಪ್ಪು", "st.reminder": "ದಿನದ ಜ್ಞಾಪನೆ — ಮಧ್ಯಾಹ್ನ 12", "st.autofill": "ತಾನಾಗಿಯೇ ತುಂಬಿ — ರಾತ್ರಿ 9", "st.familySync": "ಕುಟುಂಬ ಸಿಂಕ್", "st.createCode": "ಕೋಡ್ ರಚಿಸಿ", "st.enterCode": "ಕೋಡ್ ನಮೂದಿಸಿ", "st.removeCode": "ಕೋಡ್ ತೆಗೆದುಹಾಕಿ", "st.copy": "ನಕಲಿಸಿ", "st.share": "ಹಂಚಿಕೊಳ್ಳಿ", "st.backup": "ಬ್ಯಾಕಪ್", "st.restore": "ಮರುಸ್ಥಾಪಿಸಿ", "st.done": "ಮುಗಿಯಿತು", "k.cancel": "ರದ್ದು", "k.save": "ಉಳಿಸಿ", "k.add": "ಸೇರಿಸಿ", "k.edit": "ಸಂಪಾದಿಸಿ", "k.delete": "ಅಳಿಸಿ", "k.remove": "ತೆಗೆದುಹಾಕಿ", "k.name": "ಹೆಸರು", "k.rate": "ದರ", "k.defaultQty": "ಎಂದಿನ ಪ್ರಮಾಣ"}, "te": {"app.tagline": "ఇంటి లెక్క", "tab.vendors": "వ్యాపారి", "tab.staff": "సిబ్బంది", "tab.expenses": "ఖర్చు", "tab.summary": "సారాంశం", "v.subtitle": "నేటి డెలివరీ", "v.todayTotal": "నేటి మొత్తం", "v.addFirst": "క్రింద మొదటి వ్యాపారిని జోడించండి", "v.notEntered": "నమోదు కాలేదు", "v.pending": "{t} లో {n} నమోదు కాలేదు", "v.ifAccept": "మామూలు మొత్తం అంగీకరిస్తే ₹{a}", "v.confirmAll": "మామూలు మొత్తాన్ని నిర్ధారించండి", "v.allEntered": "అన్ని {n} నేడు నమోదయ్యాయి ✅", "v.addVendor": "వ్యాపారిని జోడించండి", "v.skipDays": "రోజులు వదిలేయండి", "v.didntCome": "రాలేదు", "v.came": "వచ్చారు", "v.calendar": "క్యాలెండర్", "v.ok": "సరే", "v.skip": "వదిలేయి", "v.pausedTill": "{d} వరకు ఆపివేయబడింది · మళ్ళీ ప్రారంభించండి", "v.ghostHint": "బూడిద = ఇంకా నమోదు కాలేదు (మామూలు మొత్తం మాత్రమే). రాత్రి 9 వరకు ఖాళీగా ఉంటే దానంతట అదే నింపబడుతుంది.", "v.attendance": "హాజరు", "v.notMarked": "గుర్తించలేదు", "v.missed": "తప్పింది", "v.thisMonth": "ఈ నెల", "vt.milk": "పాలు", "vt.tiffin": "టిఫిన్", "vt.newspaper": "వార్తాపత్రిక", "vt.ironing": "ఇస్త్రీ", "vt.car": "కారు శుభ్రత", "vt.water": "నీటి క్యాన్", "vt.vegetables": "కూరగాయలు", "vt.maidhelp": "అదనపు సహాయం", "vt.custom": "ఇతర", "u.litre": "లీటర్", "u.meal": "భోజనం", "u.day": "రోజు", "u.piece": "ముక్క", "u.wash": "కడగడం", "u.can": "క్యాన్", "u.kg": "కేజీ", "u.visit": "సందర్శన", "u.unit": "యూనిట్", "s.subtitle": "రోజువారీ హాజరు మరియు జీతం", "s.addStaff": "సిబ్బందిని జోడించండి", "s.empty": "హాజరు మరియు జీతం కోసం పనిమనిషి, వంటమనిషి, డ్రైవర్‌ను జోడించండి.", "s.present": "హాజరు", "s.half": "సగం రోజు", "s.absent": "గైర్హాజరు", "s.salary": "నెలవారీ జీతం", "s.paidLeaves": "జీతంతో సెలవు/నెల", "s.advance": "అడ్వాన్స్ ఇవ్వండి", "s.unpaidLeaves": "జీతం లేని సెలవు", "s.deduction": "తగ్గింపు", "s.leaveHint": "జీతంతో సెలవు కంటే ఎక్కువ గైర్హాజరు దానంతట అదే తగ్గించబడుతుంది (జీతం ÷ 30 రోజుకు).", "sr.maid": "పనిమనిషి", "sr.cook": "వంటమనిషి", "sr.driver": "డ్రైవర్", "sr.nanny": "ఆయా", "sr.garden": "తోటమాలి", "sr.guard": "కాపలాదారు", "sr.custom": "ఇతర", "e.subtitle": "ప్రతి ఇంటి ఖర్చు", "e.add": "ఖర్చు జోడించండి", "e.whatFor": "దేని కోసం?", "e.details": "వివరాలు (ఐచ్ఛికం)", "e.amount": "మొత్తం (₹)", "e.date": "తేదీ", "e.all": "అన్నీ", "e.topCat": "అత్యధిక ఖర్చు", "e.empty": "ఈ నెల ఖర్చు లేదు.", "c.rent": "అద్దె", "c.emi": "EMI / రుణం", "c.sip": "SIP / పెట్టుబడి", "c.insurance": "బీమా", "c.subs": "చందా", "c.creditcard": "క్రెడిట్ కార్డ్", "c.eatingin": "ఇంటికి తెప్పించుకున్నది", "c.eatingout": "బయట తిన్నది", "c.fuel": "ఇంధనం", "c.groceries": "కిరాణా", "c.ent": "వినోదం", "c.bills": "బిల్లులు", "c.recharge": "రీఛార్జ్", "c.medical": "వైద్యం", "c.school": "పాఠశాల", "c.shopping": "షాపింగ్", "c.travel": "ప్రయాణం", "c.other": "ఇతర", "r.title": "పునరావృతం", "r.add": "పునరావృత ఖర్చు జోడించండి", "r.empty": "అద్దె, SIP, EMI, క్రెడిట్ కార్డ్ బిల్లు ఒకసారి జోడించండి — ప్రతిసారీ దానంతట అదే జోడించబడుతుంది.", "r.fixed": "స్థిర", "r.varies": "మారుతుంది", "r.repeats": "ఎప్పుడెప్పుడు", "r.weekly": "వారానికి", "r.monthly": "నెలకు", "r.quarterly": "3 నెలలకు", "r.yearly": "సంవత్సరానికి", "r.dueTitle": "{n} బాకీ ఉంది", "r.enterAmount": "మొత్తం నమోదు చేయండి", "r.skipThisTime": "ఈసారి వదిలేయండి", "r.nextDue": "తదుపరి {d}", "r.paused": "ఆపివేయబడింది", "sm.subtitle": "మీ ఇంటి ఖర్చు", "sm.thisMonth": "ఈ నెల", "sm.thisYear": "ఈ సంవత్సరం", "sm.total": "మొత్తం", "sm.whereMoney": "డబ్బు ఎక్కడికి పోయింది", "sm.byCategory": "వర్గం వారీగా ఖర్చు", "sm.whatsapp": "WhatsApp లో పంపండి", "sm.upi": "UPI ద్వారా చెల్లించండి", "sm.pdf": "PDF నివేదిక డౌన్‌లోడ్", "sm.empty": "{p} కు ఏమీ లేదు.", "st.title": "సెట్టింగ్‌లు", "st.language": "భాష", "st.theme": "థీమ్", "st.auto": "ఆటో", "st.light": "లైట్", "st.dark": "డార్క్", "st.reminder": "రోజువారీ రిమైండర్ — మధ్యాహ్నం 12", "st.autofill": "దానంతట అదే నింపు — రాత్రి 9", "st.familySync": "కుటుంబ సింక్", "st.createCode": "కోడ్ సృష్టించండి", "st.enterCode": "కోడ్ నమోదు చేయండి", "st.removeCode": "కోడ్ తొలగించండి", "st.copy": "కాపీ", "st.share": "షేర్", "st.backup": "బ్యాకప్", "st.restore": "పునరుద్ధరించు", "st.done": "పూర్తయింది", "k.cancel": "రద్దు", "k.save": "సేవ్", "k.add": "జోడించు", "k.edit": "సవరించు", "k.delete": "తొలగించు", "k.remove": "తీసివేయి", "k.name": "పేరు", "k.rate": "రేటు", "k.defaultQty": "మామూలు మొత్తం"}, "ta": {"app.tagline": "வீட்டுக் கணக்கு", "tab.vendors": "வியாபாரி", "tab.staff": "பணியாளர்", "tab.expenses": "செலவு", "tab.summary": "சுருக்கம்", "v.subtitle": "இன்றைய டெலிவரி", "v.todayTotal": "இன்றைய மொத்தம்", "v.addFirst": "கீழே முதல் வியாபாரியைச் சேர்க்கவும்", "v.notEntered": "பதிவு இல்லை", "v.pending": "{t} இல் {n} பதிவு இல்லை", "v.ifAccept": "வழக்கமான அளவை ஏற்றால் ₹{a}", "v.confirmAll": "வழக்கமான அளவை உறுதிசெய்", "v.allEntered": "அனைத்து {n} இன்று பதிவு ✅", "v.addVendor": "வியாபாரியைச் சேர்", "v.skipDays": "நாட்களைத் தவிர்", "v.didntCome": "வரவில்லை", "v.came": "வந்தார்", "v.calendar": "நாள்காட்டி", "v.ok": "சரி", "v.skip": "தவிர்", "v.pausedTill": "{d} வரை நிறுத்தம் · மீண்டும் தொடங்கு", "v.ghostHint": "சாம்பல் = இன்னும் பதிவு இல்லை (வழக்கமான அளவு மட்டும்). இரவு 9 மணி வரை காலியாக இருந்தால் தானாகவே நிரப்பப்படும்.", "v.attendance": "வருகை", "v.notMarked": "குறிக்கப்படவில்லை", "v.missed": "தவறியது", "v.thisMonth": "இந்த மாதம்", "vt.milk": "பால்", "vt.tiffin": "டிபன்", "vt.newspaper": "செய்தித்தாள்", "vt.ironing": "இஸ்திரி", "vt.car": "கார் சுத்தம்", "vt.water": "தண்ணீர் கேன்", "vt.vegetables": "காய்கறி", "vt.maidhelp": "கூடுதல் உதவி", "vt.custom": "மற்றவை", "u.litre": "லிட்டர்", "u.meal": "உணவு", "u.day": "நாள்", "u.piece": "துண்டு", "u.wash": "கழுவல்", "u.can": "கேன்", "u.kg": "கிலோ", "u.visit": "வருகை", "u.unit": "அலகு", "s.subtitle": "தினசரி வருகை மற்றும் சம்பளம்", "s.addStaff": "பணியாளரைச் சேர்", "s.empty": "வருகை மற்றும் சம்பளத்திற்கு வேலைக்காரர், சமையல்காரர், ஓட்டுநரைச் சேர்க்கவும்.", "s.present": "வந்தார்", "s.half": "அரை நாள்", "s.absent": "வரவில்லை", "s.salary": "மாத சம்பளம்", "s.paidLeaves": "ஊதியத்துடன் விடுப்பு/மாதம்", "s.advance": "முன்பணம் தரவும்", "s.unpaidLeaves": "ஊதியமில்லா விடுப்பு", "s.deduction": "பிடித்தம்", "s.leaveHint": "ஊதிய விடுப்பைத் தாண்டிய வருகையின்மை தானாகவே பிடிக்கப்படும் (சம்பளம் ÷ 30 நாளுக்கு).", "sr.maid": "வேலைக்காரர்", "sr.cook": "சமையல்காரர்", "sr.driver": "ஓட்டுநர்", "sr.nanny": "ஆயா", "sr.garden": "தோட்டக்காரர்", "sr.guard": "காவலர்", "sr.custom": "மற்றவை", "e.subtitle": "ஒவ்வொரு வீட்டுச் செலவு", "e.add": "செலவைச் சேர்", "e.whatFor": "எதற்காக?", "e.details": "விவரம் (விருப்பம்)", "e.amount": "தொகை (₹)", "e.date": "தேதி", "e.all": "அனைத்தும்", "e.topCat": "அதிக செலவு", "e.empty": "இந்த மாதம் செலவு இல்லை.", "c.rent": "வாடகை", "c.emi": "EMI / கடன்", "c.sip": "SIP / முதலீடு", "c.insurance": "காப்பீடு", "c.subs": "சந்தா", "c.creditcard": "கிரெடிட் கார்டு", "c.eatingin": "வீட்டிற்கு வரவழைத்தது", "c.eatingout": "வெளியே சாப்பாடு", "c.fuel": "எரிபொருள்", "c.groceries": "மளிகை", "c.ent": "பொழுதுபோக்கு", "c.bills": "பில்", "c.recharge": "ரீசார்ஜ்", "c.medical": "மருத்துவம்", "c.school": "பள்ளி", "c.shopping": "ஷாப்பிங்", "c.travel": "பயணம்", "c.other": "மற்றவை", "r.title": "தொடர்", "r.add": "தொடர் செலவைச் சேர்", "r.empty": "வாடகை, SIP, EMI, கிரெடிட் கார்டு பில் ஒருமுறை சேர்க்கவும் — ஒவ்வொரு முறையும் தானாகவே சேர்க்கப்படும்.", "r.fixed": "நிலையான", "r.varies": "மாறும்", "r.repeats": "எப்போது", "r.weekly": "வாரந்தோறும்", "r.monthly": "மாதந்தோறும்", "r.quarterly": "3 மாதங்களுக்கு", "r.yearly": "ஆண்டுதோறும்", "r.dueTitle": "{n} நிலுவையில்", "r.enterAmount": "தொகையை உள்ளிடு", "r.skipThisTime": "இந்த முறை தவிர்", "r.nextDue": "அடுத்தது {d}", "r.paused": "நிறுத்தம்", "sm.subtitle": "உங்கள் வீட்டுச் செலவு", "sm.thisMonth": "இந்த மாதம்", "sm.thisYear": "இந்த ஆண்டு", "sm.total": "மொத்தம்", "sm.whereMoney": "பணம் எங்கே போனது", "sm.byCategory": "வகை வாரியாகச் செலவு", "sm.whatsapp": "WhatsApp இல் அனுப்பு", "sm.upi": "UPI மூலம் செலுத்து", "sm.pdf": "PDF அறிக்கை பதிவிறக்கம்", "sm.empty": "{p} க்கு எதுவும் இல்லை.", "st.title": "அமைப்புகள்", "st.language": "மொழி", "st.theme": "தீம்", "st.auto": "தானியங்கி", "st.light": "வெளிர்", "st.dark": "அடர்", "st.reminder": "தினசரி நினைவூட்டல் — மதியம் 12", "st.autofill": "தானாக நிரப்பு — இரவு 9", "st.familySync": "குடும்ப ஒத்திசைவு", "st.createCode": "குறியீடு உருவாக்கு", "st.enterCode": "குறியீட்டை உள்ளிடு", "st.removeCode": "குறியீட்டை நீக்கு", "st.copy": "நகலெடு", "st.share": "பகிர்", "st.backup": "காப்புப்பிரதி", "st.restore": "மீட்டமை", "st.done": "முடிந்தது", "k.cancel": "ரத்து", "k.save": "சேமி", "k.add": "சேர்", "k.edit": "திருத்து", "k.delete": "நீக்கு", "k.remove": "நீக்கு", "k.name": "பெயர்", "k.rate": "விலை", "k.defaultQty": "வழக்கமான அளவு"}, "bn": {"app.tagline": "বাড়ির হিসাব", "tab.vendors": "বিক্রেতা", "tab.staff": "কর্মী", "tab.expenses": "খরচ", "tab.summary": "সারসংক্ষেপ", "v.subtitle": "আজকের ডেলিভারি", "v.todayTotal": "আজকের মোট", "v.addFirst": "নিচে প্রথম বিক্রেতা যোগ করুন", "v.notEntered": "এন্ট্রি হয়নি", "v.pending": "{t} এর মধ্যে {n} এন্ট্রি হয়নি", "v.ifAccept": "স্বাভাবিক পরিমাণ ধরলে ₹{a}", "v.confirmAll": "স্বাভাবিক পরিমাণ নিশ্চিত করুন", "v.allEntered": "সব {n} আজ এন্ট্রি ✅", "v.addVendor": "বিক্রেতা যোগ করুন", "v.skipDays": "দিন বাদ দিন", "v.didntCome": "আসেনি", "v.came": "এসেছে", "v.calendar": "ক্যালেন্ডার", "v.ok": "ঠিক", "v.skip": "বাদ", "v.pausedTill": "{d} পর্যন্ত বন্ধ · আবার চালু করুন", "v.ghostHint": "ধূসর = এখনও এন্ট্রি হয়নি (শুধু স্বাভাবিক পরিমাণ)। রাত ৯টা পর্যন্ত খালি থাকলে নিজে থেকেই পূরণ হবে।", "v.attendance": "হাজিরা", "v.notMarked": "চিহ্নিত নয়", "v.missed": "আসেনি", "v.thisMonth": "এই মাসে", "vt.milk": "দুধ", "vt.tiffin": "টিফিন", "vt.newspaper": "খবরের কাগজ", "vt.ironing": "ইস্ত্রি", "vt.car": "গাড়ি পরিষ্কার", "vt.water": "পানির ক্যান", "vt.vegetables": "সবজি", "vt.maidhelp": "অতিরিক্ত সাহায্য", "vt.custom": "অন্যান্য", "u.litre": "লিটার", "u.meal": "খাবার", "u.day": "দিন", "u.piece": "পিস", "u.wash": "ধোয়া", "u.can": "ক্যান", "u.kg": "কেজি", "u.visit": "ভিজিট", "u.unit": "ইউনিট", "s.subtitle": "দৈনিক হাজিরা ও বেতন", "s.addStaff": "কর্মী যোগ করুন", "s.empty": "হাজিরা ও বেতনের জন্য কাজের লোক, রাঁধুনি, ড্রাইভার যোগ করুন।", "s.present": "উপস্থিত", "s.half": "অর্ধ দিন", "s.absent": "অনুপস্থিত", "s.salary": "মাসিক বেতন", "s.paidLeaves": "বেতনসহ ছুটি/মাস", "s.advance": "অগ্রিম দিন", "s.unpaidLeaves": "বেতনহীন ছুটি", "s.deduction": "কর্তন", "s.leaveHint": "বেতনসহ ছুটির বেশি অনুপস্থিতি নিজে থেকেই কাটা হয় (বেতন ÷ ৩০ প্রতিদিন)।", "sr.maid": "কাজের লোক", "sr.cook": "রাঁধুনি", "sr.driver": "ড্রাইভার", "sr.nanny": "আয়া", "sr.garden": "মালী", "sr.guard": "প্রহরী", "sr.custom": "অন্যান্য", "e.subtitle": "প্রতিটি ঘরোয়া খরচ", "e.add": "খরচ যোগ করুন", "e.whatFor": "কীসের জন্য?", "e.details": "বিবরণ (ঐচ্ছিক)", "e.amount": "পরিমাণ (₹)", "e.date": "তারিখ", "e.all": "সব", "e.topCat": "সবচেয়ে বেশি খরচ", "e.empty": "এই মাসে কোনো খরচ নেই।", "c.rent": "ভাড়া", "c.emi": "EMI / ঋণ", "c.sip": "SIP / বিনিয়োগ", "c.insurance": "বীমা", "c.subs": "সাবস্ক্রিপশন", "c.creditcard": "ক্রেডিট কার্ড", "c.eatingin": "বাড়িতে অর্ডার", "c.eatingout": "বাইরে খাওয়া", "c.fuel": "জ্বালানি", "c.groceries": "মুদি", "c.ent": "বিনোদন", "c.bills": "বিল", "c.recharge": "রিচার্জ", "c.medical": "চিকিৎসা", "c.school": "স্কুল", "c.shopping": "কেনাকাটা", "c.travel": "ভ্রমণ", "c.other": "অন্যান্য", "r.title": "পুনরাবৃত্ত", "r.add": "পুনরাবৃত্ত খরচ যোগ করুন", "r.empty": "ভাড়া, SIP, EMI, ক্রেডিট কার্ড বিল একবার যোগ করুন — প্রতিবার নিজে থেকেই যোগ হবে।", "r.fixed": "নির্দিষ্ট", "r.varies": "পরিবর্তনশীল", "r.repeats": "কতবার", "r.weekly": "সাপ্তাহিক", "r.monthly": "মাসিক", "r.quarterly": "ত্রৈমাসিক", "r.yearly": "বার্ষিক", "r.dueTitle": "{n} বাকি আছে", "r.enterAmount": "পরিমাণ লিখুন", "r.skipThisTime": "এবার বাদ দিন", "r.nextDue": "পরবর্তী {d}", "r.paused": "বন্ধ", "sm.subtitle": "আপনার ঘরোয়া খরচ", "sm.thisMonth": "এই মাসে", "sm.thisYear": "এই বছর", "sm.total": "মোট", "sm.whereMoney": "টাকা কোথায় গেল", "sm.byCategory": "বিভাগ অনুযায়ী খরচ", "sm.whatsapp": "WhatsApp এ পাঠান", "sm.upi": "UPI দিয়ে পরিশোধ", "sm.pdf": "PDF রিপোর্ট ডাউনলোড", "sm.empty": "{p} এর জন্য কিছু নেই।", "st.title": "সেটিংস", "st.language": "ভাষা", "st.theme": "থিম", "st.auto": "অটো", "st.light": "হালকা", "st.dark": "গাঢ়", "st.reminder": "দৈনিক রিমাইন্ডার — দুপুর ১২টা", "st.autofill": "নিজে থেকে পূরণ — রাত ৯টা", "st.familySync": "পরিবার সিঙ্ক", "st.createCode": "কোড তৈরি করুন", "st.enterCode": "কোড লিখুন", "st.removeCode": "কোড সরান", "st.copy": "কপি", "st.share": "শেয়ার", "st.backup": "ব্যাকআপ", "st.restore": "পুনরুদ্ধার", "st.done": "সম্পন্ন", "k.cancel": "বাতিল", "k.save": "সংরক্ষণ", "k.add": "যোগ", "k.edit": "সম্পাদনা", "k.delete": "মুছুন", "k.remove": "সরান", "k.name": "নাম", "k.rate": "দর", "k.defaultQty": "স্বাভাবিক পরিমাণ"}};
+function getLang(){ const l=DB.get('gk.lang','en'); return STRINGS[l]?l:'en'; }
+function setLang(l){ if(!STRINGS[l]) return; DB.set('gk.lang',l); applyLangFont(); render(); openSettings(); }
+function t(key,vars){
+  const L=getLang();
+  let s=(STRINGS[L]&&STRINGS[L][key])||STRINGS.en[key]||key;
+  if(vars) for(const k of Object.keys(vars)) s=s.split('{'+k+'}').join(String(vars[k]));
+  return s;
+}
+// Our display font has no Indic glyphs — swap to a script-capable stack for non-English.
+function applyLangFont(){
+  const L=getLang();
+  document.body.style.fontFamily = L==='en'
+    ? "'Inter',sans-serif"
+    : "'Noto Sans','Noto Sans Devanagari','Noto Sans Gujarati','Noto Sans Tamil','Noto Sans Bengali','Noto Sans Kannada','Noto Sans Telugu',sans-serif";
+  document.documentElement.lang=L;
+}
+
 const S={
   vendors:()=>DB.get('gk.vendors',[]), setVendors:(v)=>{DB.set('gk.vendors',v); pushSync();},
   entries:()=>DB.get('gk.entries',{}), setEntries:(e)=>{DB.set('gk.entries',e); pushSync();},
@@ -316,43 +337,44 @@ function expByCat(expenses,period){
   const by={}; expInPeriod(expenses,period).forEach(e=>{ by[e.cat]=(by[e.cat]||0)+e.amount; }); return by; }
 
 // ============ PRESETS ============
+// name/unit are i18n KEYS — display with t(...)
 const VENDOR_TYPES=[
-  {type:'milk',name:'Milk',emoji:'🥛',unit:'litre',rate:60,def:1,frac:true},
-  {type:'tiffin',name:'Tiffin',emoji:'🍱',unit:'meal',rate:80,def:1,frac:false},
-  {type:'newspaper',name:'Newspaper',emoji:'📰',unit:'day',rate:5,def:1,frac:false},
-  {type:'ironing',name:'Ironing',emoji:'👕',unit:'piece',rate:10,def:5,frac:false},
-  {type:'car',name:'Car cleaning',emoji:'🚗',unit:'wash',rate:40,def:1,frac:false},
-  {type:'water',name:'Water can',emoji:'💧',unit:'can',rate:40,def:1,frac:false},
-  {type:'vegetables',name:'Vegetables',emoji:'🥬',unit:'kg',rate:40,def:1,frac:true},
-  {type:'maidhelp',name:'Extra help',emoji:'🧹',unit:'visit',rate:50,def:1,frac:false},
-  {type:'custom',name:'Custom',emoji:'📦',unit:'unit',rate:10,def:1,frac:false},
+  {type:'milk',name:'vt.milk',emoji:'🥛',unit:'u.litre',rate:60,def:1,frac:true},
+  {type:'tiffin',name:'vt.tiffin',emoji:'🍱',unit:'u.meal',rate:80,def:1,frac:false},
+  {type:'newspaper',name:'vt.newspaper',emoji:'📰',unit:'u.day',rate:5,def:1,frac:false},
+  {type:'ironing',name:'vt.ironing',emoji:'👕',unit:'u.piece',rate:10,def:5,frac:false},
+  {type:'car',name:'vt.car',emoji:'🚗',unit:'u.wash',rate:40,def:1,frac:false},
+  {type:'water',name:'vt.water',emoji:'💧',unit:'u.can',rate:40,def:1,frac:false},
+  {type:'vegetables',name:'vt.vegetables',emoji:'🥬',unit:'u.kg',rate:40,def:1,frac:true},
+  {type:'maidhelp',name:'vt.maidhelp',emoji:'🧹',unit:'u.visit',rate:50,def:1,frac:false},
+  {type:'custom',name:'vt.custom',emoji:'📦',unit:'u.unit',rate:10,def:1,frac:false},
 ];
 const STAFF_ROLES=[
-  {role:'maid',name:'Maid',emoji:'🧹'},{role:'cook',name:'Cook',emoji:'👩‍🍳'},
-  {role:'driver',name:'Driver',emoji:'🚙'},{role:'nanny',name:'Nanny',emoji:'🍼'},
-  {role:'garden',name:'Gardener',emoji:'🌱'},{role:'guard',name:'Guard',emoji:'💂'},
-  {role:'custom',name:'Other',emoji:'👤'},
+  {role:'maid',name:'sr.maid',emoji:'🧹'},{role:'cook',name:'sr.cook',emoji:'👩‍🍳'},
+  {role:'driver',name:'sr.driver',emoji:'🚙'},{role:'nanny',name:'sr.nanny',emoji:'🍼'},
+  {role:'garden',name:'sr.garden',emoji:'🌱'},{role:'guard',name:'sr.guard',emoji:'💂'},
+  {role:'custom',name:'sr.custom',emoji:'👤'},
 ];
 // cat = stable key; name/emoji/color for display
 const EXP_CATS=[
-  {cat:'rent',      name:'Rent',          emoji:'🏠', color:'#2D5C8F', ph:'Landlord, society…'},
-  {cat:'emi',       name:'EMI / Loan',    emoji:'🏦', color:'#1E4269', ph:'Bank, car loan, home loan…'},
-  {cat:'sip',       name:'SIP / Invest',  emoji:'📈', color:'#2E8B57', ph:'Fund name, broker…'},
-  {cat:'insurance', name:'Insurance',     emoji:'🛡️', color:'#118AB2', ph:'LIC, health, car…'},
-  {cat:'subs',      name:'Subscription',  emoji:'📺', color:'#9B5DE5', ph:'Netflix, gym, Prime…'},
-  {cat:'creditcard',name:'Credit card',   emoji:'💳', color:'#EF476F', ph:'Which card?'},
-  {cat:'eatingin',  name:'Eating in',     emoji:'🛵', color:'#E8794A', ph:'Blinkit, Zepto, Instamart…'},
-  {cat:'eatingout', name:'Eating out',    emoji:'🍽️', color:'#D9534F', ph:'Restaurant name'},
-  {cat:'fuel',      name:'Fuel',          emoji:'⛽', color:'#5B8DEF', ph:'Petrol pump / vehicle'},
-  {cat:'groceries', name:'Groceries',     emoji:'🛒', color:'#66A182', ph:'Shop name'},
-  {cat:'ent',       name:'Entertainment', emoji:'🎬', color:'#C77DFF', ph:'Movie, outing…'},
-  {cat:'bills',     name:'Bills',         emoji:'⚡', color:'#F5B841', ph:'Electricity, gas, water…'},
-  {cat:'recharge',  name:'Recharge',      emoji:'📱', color:'#00B8A9', ph:'Mobile, DTH, internet'},
-  {cat:'medical',   name:'Medical',       emoji:'🏥', color:'#FF6B6B', ph:'Doctor, chemist…'},
-  {cat:'school',    name:'School',        emoji:'🎓', color:'#4D96FF', ph:'Fees, books, uniform'},
-  {cat:'shopping',  name:'Shopping',      emoji:'🛍️', color:'#F78C6B', ph:'Amazon, Flipkart, store…'},
-  {cat:'travel',    name:'Travel',        emoji:'🚕', color:'#06D6A0', ph:'Uber, train, flight…'},
-  {cat:'other',     name:'Other',         emoji:'🎁', color:'#8D99AE', ph:'Details (optional)'},
+  {cat:'rent',      name:'c.rent',          emoji:'🏠', color:'#2D5C8F', ph:'Landlord, society…'},
+  {cat:'emi',       name:'c.emi',    emoji:'🏦', color:'#1E4269', ph:'Bank, car loan, home loan…'},
+  {cat:'sip',       name:'c.sip',  emoji:'📈', color:'#2E8B57', ph:'Fund name, broker…'},
+  {cat:'insurance', name:'c.insurance',     emoji:'🛡️', color:'#118AB2', ph:'LIC, health, car…'},
+  {cat:'subs',      name:'c.subs',  emoji:'📺', color:'#9B5DE5', ph:'Netflix, gym, Prime…'},
+  {cat:'creditcard',name:'c.creditcard',   emoji:'💳', color:'#EF476F', ph:'Which card?'},
+  {cat:'eatingin',  name:'c.eatingin',     emoji:'🛵', color:'#E8794A', ph:'Blinkit, Zepto, Instamart…'},
+  {cat:'eatingout', name:'c.eatingout',    emoji:'🍽️', color:'#D9534F', ph:'Restaurant name'},
+  {cat:'fuel',      name:'c.fuel',          emoji:'⛽', color:'#5B8DEF', ph:'Petrol pump / vehicle'},
+  {cat:'groceries', name:'c.groceries',     emoji:'🛒', color:'#66A182', ph:'Shop name'},
+  {cat:'ent',       name:'c.ent', emoji:'🎬', color:'#C77DFF', ph:'Movie, outing…'},
+  {cat:'bills',     name:'c.bills',         emoji:'⚡', color:'#F5B841', ph:'Electricity, gas, water…'},
+  {cat:'recharge',  name:'c.recharge',      emoji:'📱', color:'#00B8A9', ph:'Mobile, DTH, internet'},
+  {cat:'medical',   name:'c.medical',       emoji:'🏥', color:'#FF6B6B', ph:'Doctor, chemist…'},
+  {cat:'school',    name:'c.school',        emoji:'🎓', color:'#4D96FF', ph:'Fees, books, uniform'},
+  {cat:'shopping',  name:'c.shopping',      emoji:'🛍️', color:'#F78C6B', ph:'Amazon, Flipkart, store…'},
+  {cat:'travel',    name:'c.travel',        emoji:'🚕', color:'#06D6A0', ph:'Uber, train, flight…'},
+  {cat:'other',     name:'c.other',         emoji:'🎁', color:'#8D99AE', ph:'Details (optional)'},
 ];
 // Recurring items are usually rent/EMI/SIP — show those first in the recurring form.
 const RECURRING_FIRST=['rent','emi','sip','insurance','subs','creditcard','bills','recharge','school'];
@@ -436,7 +458,7 @@ function scheduleWebReminder(){
   else if(Notification.permission!=='denied'){ Notification.requestPermission().then(p=>{ if(p==='granted') fire(); }); }
 }
 function renderTabs(){
-  const tabs=[['vendors','Vendors',ICON.cart],['staff','Staff',ICON.people],['expenses','Expenses',ICON.wallet],['summary','Summary',ICON.chart]];
+  const tabs=[['vendors',t('tab.vendors'),ICON.cart],['staff',t('tab.staff'),ICON.people],['expenses',t('tab.expenses'),ICON.wallet],['summary',t('tab.summary'),ICON.chart]];
   $('tabbar').innerHTML=tabs.map(([k,l,i])=>`<button class="tabbtn ${tab===k?'on':''}" onclick="switchTab('${k}')">${i}<span>${l}</span></button>`).join('');
 }
 function switchTab(k){ tab=k; renderTabs(); render(); }
@@ -444,7 +466,7 @@ function setTagline(t){ $('tagline').textContent=t; }
 
 // ============ VENDORS ============
 function renderVendors(){
-  setTagline("Today's deliveries & daily help");
+  setTagline(t('v.subtitle'));
   const today=todayKey(); const vendors=S.vendors(); const entries=S.entries();
   const tq=(id)=>{ const e=entries[today]; return e&&e[id]!=null?e[id]:null; };
   const paused=(v)=>v.skipUntil&&today<=v.skipUntil;
@@ -455,42 +477,42 @@ function renderVendors(){
     if(q!=null) total+=q*v.rate;
     else { pending++; ifAccepted+=v.def*v.rate; } });
 
-  let h=`<div class="totCard"><div class="totLabel">TODAY'S TOTAL</div>
+  let h=`<div class="totCard"><div class="totLabel">${t('v.todayTotal')}</div>
     <div class="totVal">₹${fmt(total)}</div>`;
   if(!vendors.length){
-    h+=`<div class="totSub">Add your first vendor below</div>`;
+    h+=`<div class="totSub">${t('v.addFirst')}</div>`;
   } else if(pending){
-    h+=`<div class="totSub">${pending} of ${active.length} not entered yet · ₹${fmt(total+ifAccepted)} if you accept the usual amounts</div>
-        <button class="confirmBtn" onclick="confirmDefaults()">✓ Confirm usual amounts</button>`;
+    h+=`<div class="totSub">${t('v.pending',{n:pending,t:active.length})} · ${t('v.ifAccept',{a:fmt(total+ifAccepted)})}</div>
+        <button class="confirmBtn" onclick="confirmDefaults()">✓ ${t('v.confirmAll')}</button>`;
   } else {
-    h+=`<div class="totSub">All ${active.length} entered for today ✅</div>`;
+    h+=`<div class="totSub">${t('v.allEntered',{n:active.length})}</div>`;
   }
   h+=`</div>`;
 
   vendors.forEach(v=>{
     const q=tq(v.id); const p=paused(v); const entered=q!=null; const shown=entered?q:v.def;
-    const label=shown===0?'Skip':`${shown%1===0?shown:shown.toFixed(1)} ${v.unit}${shown>1&&!v.frac?'s':''}`;
+    const label=shown===0?t('v.skip'):`${shown%1===0?shown:shown.toFixed(1)} ${t(v.unit)}`;
     h+=`<div class="card"><div class="cardTop"><div class="emoji">${v.emoji}</div>
       <div style="flex:1"><div class="vName">${esc(v.name)}</div>
-      <div class="vMeta">₹${v.rate}/${v.unit}${entered&&!p?' · today ₹'+fmt(q*v.rate):''}</div></div>
-      ${!p&&!entered?'<span class="pendPill">not entered</span>':''}
+      <div class="vMeta">₹${v.rate}/${t(v.unit)}${entered&&!p?' · ₹'+fmt(q*v.rate):''}</div></div>
+      ${!p&&!entered?`<span class="pendPill">${t('v.notEntered')}</span>`:''}
       <button class="dots" onclick="removeVendor('${v.id}')">⋮</button></div>`;
-    if(p){ h+=`<button class="pausedRow" onclick="clearSkip('${v.id}')">⏸ Paused till ${v.skipUntil} · tap to resume</button>`; }
+    if(p){ h+=`<button class="pausedRow" onclick="clearSkip('${v.id}')">⏸ ${t('v.pausedTill',{d:v.skipUntil})}</button>`; }
     else{ h+=`<div class="stepRow"><div class="stepper">
       <button class="stepBtn" onclick="stepVendor('${v.id}',${v.frac?-0.5:-1})">−</button>
       <span class="stepVal ${shown===0?'zero':''} ${entered?'':'ghost'}">${label}</span>
       ${v.frac?`<button class="stepBtn halfBtn" onclick="stepVendor('${v.id}',0.5)">+½</button>`:''}
       <button class="stepBtn" onclick="stepVendor('${v.id}',1)">+</button></div>
-      ${entered?`<button class="skipBtn" onclick="openSkip('${v.id}')">Skip days</button>`
-                :`<button class="okBtn" onclick="acceptDefault('${v.id}')">✓ OK</button>`}</div>
+      ${entered?`<button class="skipBtn" onclick="openSkip('${v.id}')">${t('v.skipDays')}</button>`
+                :`<button class="okBtn" onclick="acceptDefault('${v.id}')">✓ ${t('v.ok')}</button>`}</div>
       <div class="rowBtns">
-        <button class="miniBtn ${q===0?'miniOn':''}" onclick="toggleCame('${v.id}')">✕ Didn't come</button>
-        <button class="miniBtn miniBlue" onclick="openVCal('${v.id}')">📅 Calendar</button>
+        <button class="miniBtn ${q===0?'miniOn':''}" onclick="toggleCame('${v.id}')">✕ ${t('v.didntCome')}</button>
+        <button class="miniBtn miniBlue" onclick="openVCal('${v.id}')">📅 ${t('v.calendar')}</button>
       </div>`; }
     h+=`</div>`;
   });
-  h+=`<button class="addBtn" onclick="openAddVendor()">＋ Add vendor</button>`;
-  h+=`<div class="hint" style="text-align:center;margin-top:12px">Grey = not entered yet (just the usual amount). Anything still blank at 9 PM is filled in automatically.</div>`;
+  h+=`<button class="addBtn" onclick="openAddVendor()">＋ ${t('v.addVendor')}</button>`;
+  h+=`<div class="hint" style="text-align:center;margin-top:12px">${t('v.ghostHint')}</div>`;
   $('body').innerHTML=h;
 }
 // Accept one vendor's usual amount as today's entry.
@@ -514,28 +536,28 @@ function stepVendor(id,d){
   entries[today]={...(entries[today]||{}),[id]:nv}; S.setEntries(entries); renderVendors();
 }
 function openAddVendor(){
-  const chips=VENDOR_TYPES.map((t,i)=>`<button class="chip ${i===0?'on':''}" onclick="pickVType(${i})"><span class="ce">${t.emoji}</span><span class="ct">${t.name}</span></button>`).join('');
+  const chips=VENDOR_TYPES.map((vt,i)=>`<button class="chip ${i===0?'on':''}" onclick="pickVType(${i})"><span class="ce">${vt.emoji}</span><span class="ct">${t(vt.name)}</span></button>`).join('');
   const p=VENDOR_TYPES[0];
-  showModal(`<div class="modalTitle">Add vendor</div><div class="chips" id="vchips">${chips}</div>
-    <label class="fLabel">Name</label><input class="fInput" id="vName" value="${p.name}">
+  showModal(`<div class="modalTitle">${t('v.addVendor')}</div><div class="chips" id="vchips">${chips}</div>
+    <label class="fLabel">${t('k.name')}</label><input class="fInput" id="vName" value="${t(p.name)}">
     <div style="display:flex;gap:10px">
-      <div style="flex:1"><label class="fLabel">Rate (₹ per <span id="vunit">${p.unit}</span>)</label><input class="fInput" id="vRate" inputmode="decimal" value="${p.rate}"></div>
-      <div style="flex:1"><label class="fLabel">Default qty</label><input class="fInput" id="vDef" inputmode="decimal" value="${p.def}"></div></div>
-    <div class="modalBtns"><button class="cancelBtn" onclick="closeModal()">Cancel</button><button class="saveBtn" onclick="saveVendor()">Add</button></div>`);
+      <div style="flex:1"><label class="fLabel">${t('k.rate')} (₹ / <span id="vunit">${t(p.unit)}</span>)</label><input class="fInput" id="vRate" inputmode="decimal" value="${p.rate}"></div>
+      <div style="flex:1"><label class="fLabel">${t('k.defaultQty')}</label><input class="fInput" id="vDef" inputmode="decimal" value="${p.def}"></div></div>
+    <div class="modalBtns"><button class="cancelBtn" onclick="closeModal()">${t('k.cancel')}</button><button class="saveBtn" onclick="saveVendor()">${t('k.add')}</button></div>`);
   window._vp=0;
 }
 function pickVType(i){
-  window._vp=i; const t=VENDOR_TYPES[i];
+  window._vp=i; const vt=VENDOR_TYPES[i];
   document.querySelectorAll('#vchips .chip').forEach((c,x)=>c.classList.toggle('on',x===i));
-  $('vunit').textContent=t.unit;
-  if(t.type!=='custom'){ $('vName').value=t.name; $('vRate').value=t.rate; $('vDef').value=t.def; }
+  $('vunit').textContent=t(vt.unit);
+  if(vt.type!=='custom'){ $('vName').value=t(vt.name); $('vRate').value=vt.rate; $('vDef').value=vt.def; }
   else { $('vName').value=''; $('vRate').value=''; $('vDef').value=1; }
 }
 function saveVendor(){
-  const t=VENDOR_TYPES[window._vp||0]; const name=$('vName').value.trim();
+  const vt=VENDOR_TYPES[window._vp||0]; const name=$('vName').value.trim();
   const rate=parseFloat($('vRate').value); const def=parseFloat($('vDef').value);
   if(!name||isNaN(rate)||rate<0){ alert('Enter a name and rate.'); return; }
-  const vs=S.vendors(); vs.push({id:uid(),name,type:t.type,emoji:t.emoji,unit:t.unit,rate,def:isNaN(def)?t.def:def,frac:t.frac,skipUntil:null});
+  const vs=S.vendors(); vs.push({id:uid(),name,type:vt.type,emoji:vt.emoji,unit:vt.unit,rate,def:isNaN(def)?vt.def:def,frac:vt.frac,skipUntil:null});
   S.setVendors(vs); closeModal(); renderVendors();
 }
 function removeVendor(id){ const v=S.vendors().find(x=>x.id===id);
@@ -586,7 +608,7 @@ function renderVCal(){
       <span class="calDnum">${d}</span><span class="calDot ${dot}"></span></button>`;
   }
 
-  showModal(`<div class="modalTitle">${v.emoji} ${esc(v.name)} — attendance</div>
+  showModal(`<div class="modalTitle">${v.emoji} ${esc(v.name)} — ${t('v.attendance')}</div>
     <div class="calWrap">
       <div class="calHead">
         <button class="calNav" onclick="vcalMove(-1)">‹</button>
@@ -596,20 +618,20 @@ function renderVCal(){
       <div class="calDow">${DOW.map(d=>`<span>${d}</span>`).join('')}</div>
       <div class="calGrid">${cells}</div>
       <div class="calLegend">
-        <span class="calLg"><span class="calDot P"></span>Came</span>
-        <span class="calLg"><span class="calDot A"></span>Didn't come</span>
-        <span class="calLg"><span class="calDot"></span>Not marked</span>
+        <span class="calLg"><span class="calDot P"></span>${t('v.came')}</span>
+        <span class="calLg"><span class="calDot A"></span>${t('v.didntCome')}</span>
+        <span class="calLg"><span class="calDot"></span>${t('v.notMarked')}</span>
       </div>
       <div class="calStat">
-        <div class="calStatI"><div class="calStatN" style="color:var(--green)">${came}</div><div class="calStatL">Came</div></div>
-        <div class="calStatI"><div class="calStatN" style="color:var(--red)">${missed}</div><div class="calStatL">Missed</div></div>
-        <div class="calStatI"><div class="calStatN">${Math.round(qtySum*10)/10}</div><div class="calStatL">Total ${v.unit}</div></div>
-        <div class="calStatI"><div class="calStatN" style="color:var(--pri)">₹${fmt(amount)}</div><div class="calStatL">This month</div></div>
+        <div class="calStatI"><div class="calStatN" style="color:var(--green)">${came}</div><div class="calStatL">${t('v.came')}</div></div>
+        <div class="calStatI"><div class="calStatN" style="color:var(--red)">${missed}</div><div class="calStatL">${t('v.missed')}</div></div>
+        <div class="calStatI"><div class="calStatN">${Math.round(qtySum*10)/10}</div><div class="calStatL">${t(v.unit)}</div></div>
+        <div class="calStatI"><div class="calStatN" style="color:var(--pri)">₹${fmt(amount)}</div><div class="calStatL">${t('v.thisMonth')}</div></div>
       </div>
       <div class="hint">Tap a past day: not marked → came (${v.def} ${v.unit}) → didn't come → not marked.
       For an unusual quantity on a day, use the −/+ stepper on the Vendors tab.</div>
     </div>
-    <div class="modalBtns"><button class="saveBtn" onclick="closeModal(); renderVendors();">Done</button></div>`);
+    <div class="modalBtns"><button class="saveBtn" onclick="closeModal(); renderVendors();">${t('st.done')}</button></div>`);
 }
 function cycleVCal(key){
   const v=S.vendors().find(x=>x.id===vcalId); const entries=S.entries();
@@ -623,43 +645,43 @@ function cycleVCal(key){
 
 // ============ STAFF ============
 function renderStaff(){
-  setTagline('Daily attendance & salary');
+  setTagline(t('s.subtitle'));
   const today=todayKey(); const period=monthOf(today);
   const staff=S.staff(), att=S.att(), adv=S.advances();
-  let h=''; if(!staff.length) h+=`<div class="empty">Add your maid, cook, driver and more to track attendance and salary.</div>`;
-  const M=[['P','Present','green'],['H','Half','amber'],['A','Absent','red']];
+  let h=''; if(!staff.length) h+=`<div class="empty">${t('s.empty')}</div>`;
+  const M=[['P',t('s.present'),'green'],['H',t('s.half'),'amber'],['A',t('s.absent'),'red']];
   staff.forEach(st=>{
     const mk=att[today]&&att[today][st.id]; const sal=staffSalary(st,att,adv,period);
     h+=`<div class="card"><div class="cardTop"><div class="emoji">${st.emoji}</div>
-      <div style="flex:1"><div class="vName">${esc(st.name)}</div><div class="vMeta">₹${fmt(st.salary)}/mo · ${st.paidLeaves} paid leaves</div></div>
+      <div style="flex:1"><div class="vName">${esc(st.name)}</div><div class="vMeta">₹${fmt(st.salary)}/mo · ${st.paidLeaves} ${t('s.paidLeaves')}</div></div>
       <button class="dots" onclick="removeStaff('${st.id}')">⋮</button></div>
       <div class="markRow">${M.map(([k,l,c])=>`<button class="markBtn" style="${mk===k?`background:var(--${c});border-color:var(--${c});color:#fff`:''}" onclick="markAtt('${st.id}','${k}')">${l}</button>`).join('')}</div>
       <div class="salRow">
-        <div class="salItem"><div class="salLabel">This month</div><div class="salVal">₹${fmt(sal.net)}</div></div>
-        <div class="salItem"><div class="salLabel">Unpaid leaves</div><div class="salVal">${sal.unpaid>0?'−₹'+fmt(sal.deduction):'0'}</div></div>
-        <div class="salItem"><div class="salLabel">Advance</div><div class="salVal">${sal.adv>0?'−₹'+fmt(sal.adv):'₹0'}</div></div></div>
-      <button class="advBtn" onclick="openAdvance('${st.id}')">💵 Give advance</button>
-      <button class="calBtn" onclick="openCal('${st.id}')">📅 Monthly attendance</button></div>`;
+        <div class="salItem"><div class="salLabel">${t('v.thisMonth')}</div><div class="salVal">₹${fmt(sal.net)}</div></div>
+        <div class="salItem"><div class="salLabel">${t('s.unpaidLeaves')}</div><div class="salVal">${sal.unpaid>0?'−₹'+fmt(sal.deduction):'0'}</div></div>
+        <div class="salItem"><div class="salLabel">${t('s.advance')}</div><div class="salVal">${sal.adv>0?'−₹'+fmt(sal.adv):'₹0'}</div></div></div>
+      <button class="advBtn" onclick="openAdvance('${st.id}')">💵 ${t('s.advance')}</button>
+      <button class="calBtn" onclick="openCal('${st.id}')">📅 ${t('v.attendance')}</button></div>`;
   });
-  h+=`<button class="addBtn" onclick="openAddStaff()">＋ Add staff</button>`;
+  h+=`<button class="addBtn" onclick="openAddStaff()">＋ ${t('s.addStaff')}</button>`;
   $('body').innerHTML=h;
 }
 function markAtt(id,k){ const t=todayKey(); const att=S.att(); const cur=att[t]&&att[t][id];
   const day={...(att[t]||{})}; if(cur===k) delete day[id]; else day[id]=k; att[t]=day; S.setAtt(att); renderStaff(); }
 function openAddStaff(){
-  const chips=STAFF_ROLES.map((r,i)=>`<button class="chip ${i===0?'on':''}" onclick="pickRole(${i})"><span class="ce">${r.emoji}</span><span class="ct">${r.name}</span></button>`).join('');
-  showModal(`<div class="modalTitle">Add staff</div><div class="chips" id="schips">${chips}</div>
-    <label class="fLabel">Name</label><input class="fInput" id="sName" value="Maid">
+  const chips=STAFF_ROLES.map((r,i)=>`<button class="chip ${i===0?'on':''}" onclick="pickRole(${i})"><span class="ce">${r.emoji}</span><span class="ct">${t(r.name)}</span></button>`).join('');
+  showModal(`<div class="modalTitle">${t('s.addStaff')}</div><div class="chips" id="schips">${chips}</div>
+    <label class="fLabel">${t('k.name')}</label><input class="fInput" id="sName" value="${t(STAFF_ROLES[0].name)}">
     <div style="display:flex;gap:10px">
-      <div style="flex:1"><label class="fLabel">Monthly salary (₹)</label><input class="fInput" id="sSal" inputmode="numeric" placeholder="8000"></div>
-      <div style="flex:1"><label class="fLabel">Paid leaves/mo</label><input class="fInput" id="sLv" inputmode="decimal" value="4"></div></div>
-    <div class="hint">Absences beyond paid leaves are auto-deducted (salary ÷ 30 per day).</div>
-    <div class="modalBtns"><button class="cancelBtn" onclick="closeModal()">Cancel</button><button class="saveBtn" onclick="saveStaff()">Add</button></div>`);
+      <div style="flex:1"><label class="fLabel">${t('s.salary')} (₹)</label><input class="fInput" id="sSal" inputmode="numeric" placeholder="8000"></div>
+      <div style="flex:1"><label class="fLabel">${t('s.paidLeaves')}</label><input class="fInput" id="sLv" inputmode="decimal" value="4"></div></div>
+    <div class="hint">${t('s.leaveHint')}</div>
+    <div class="modalBtns"><button class="cancelBtn" onclick="closeModal()">${t('k.cancel')}</button><button class="saveBtn" onclick="saveStaff()">${t('k.add')}</button></div>`);
   window._sr=0;
 }
 function pickRole(i){ window._sr=i; const r=STAFF_ROLES[i];
   document.querySelectorAll('#schips .chip').forEach((c,x)=>c.classList.toggle('on',x===i));
-  $('sName').value = r.role!=='custom' ? r.name : ''; }
+  $('sName').value = r.role!=='custom' ? t(r.name) : ''; }
 function saveStaff(){
   const r=STAFF_ROLES[window._sr||0]; const name=$('sName').value.trim();
   const salary=parseFloat($('sSal').value); const lv=parseFloat($('sLv').value);
@@ -711,7 +733,7 @@ function renderCal(){
   const unpaid=Math.max(0,(A+H*0.5)-st.paidLeaves);
   const ded=Math.round(unpaid*(st.salary/30));
 
-  showModal(`<div class="modalTitle">${esc(st.name)} — attendance</div>
+  showModal(`<div class="modalTitle">${esc(st.name)} — ${t('v.attendance')}</div>
     <div class="calWrap">
       <div class="calHead">
         <button class="calNav" onclick="calMove(-1)">‹</button>
@@ -721,21 +743,21 @@ function renderCal(){
       <div class="calDow">${DOW.map(d=>`<span>${d}</span>`).join('')}</div>
       <div class="calGrid">${cells}</div>
       <div class="calLegend">
-        <span class="calLg"><span class="calDot P"></span>Present</span>
-        <span class="calLg"><span class="calDot H"></span>Half day</span>
-        <span class="calLg"><span class="calDot A"></span>Absent</span>
-        <span class="calLg"><span class="calDot"></span>Not marked</span>
+        <span class="calLg"><span class="calDot P"></span>${t('s.present')}</span>
+        <span class="calLg"><span class="calDot H"></span>${t('s.half')}</span>
+        <span class="calLg"><span class="calDot A"></span>${t('s.absent')}</span>
+        <span class="calLg"><span class="calDot"></span>${t('v.notMarked')}</span>
       </div>
       <div class="calStat">
-        <div class="calStatI"><div class="calStatN" style="color:var(--green)">${P}</div><div class="calStatL">Present</div></div>
-        <div class="calStatI"><div class="calStatN" style="color:var(--amber)">${H}</div><div class="calStatL">Half</div></div>
-        <div class="calStatI"><div class="calStatN" style="color:var(--red)">${A}</div><div class="calStatL">Absent</div></div>
-        <div class="calStatI"><div class="calStatN">${ded>0?'−₹'+fmt(ded):'₹0'}</div><div class="calStatL">Deduction</div></div>
+        <div class="calStatI"><div class="calStatN" style="color:var(--green)">${P}</div><div class="calStatL">${t('s.present')}</div></div>
+        <div class="calStatI"><div class="calStatN" style="color:var(--amber)">${H}</div><div class="calStatL">${t('s.half')}</div></div>
+        <div class="calStatI"><div class="calStatN" style="color:var(--red)">${A}</div><div class="calStatL">${t('s.absent')}</div></div>
+        <div class="calStatI"><div class="calStatN">${ded>0?'−₹'+fmt(ded):'₹0'}</div><div class="calStatL">${t('s.deduction')}</div></div>
       </div>
       <div class="hint">Tap any past day to change it: Present → Half → Absent → clear.
       ${st.paidLeaves} paid leave${st.paidLeaves===1?'':'s'}/month; anything beyond that is deducted at ₹${fmt(Math.round(st.salary/30))}/day.</div>
     </div>
-    <div class="modalBtns"><button class="saveBtn" onclick="closeModal(); renderStaff();">Done</button></div>`);
+    <div class="modalBtns"><button class="saveBtn" onclick="closeModal(); renderStaff();">${t('st.done')}</button></div>`);
 }
 function cycleCal(key){
   const att=S.att(); const cur=(att[key]&&att[key][calStaffId])||'';
@@ -747,7 +769,7 @@ function cycleCal(key){
 
 // ============ EXPENSES ============
 function renderExpenses(){
-  setTagline('Track every household spend');
+  setTagline(t('e.subtitle'));
   const period=monthOf(todayKey());
   const all=expInPeriod(S.expenses(),period).sort((a,b)=>b.date.localeCompare(a.date)||b.id.localeCompare(a.id));
   const shown=expFilter==='all'?all:all.filter(e=>e.cat===expFilter);
@@ -763,31 +785,31 @@ function renderExpenses(){
   if(top && expFilter==='all'){
     const c=CAT(top[0]);
     h+=`<div class="topCat"><div class="emoji">${c.emoji}</div><div style="flex:1">
-      <div class="topCatT">TOP SPENDING CATEGORY</div>
-      <div class="topCatV">${c.name} · ₹${fmt(top[1])} <span style="color:var(--muted);font-weight:500">(${Math.round(top[1]/monthTotal*100)}%)</span></div></div></div>`;
+      <div class="topCatT">${t('e.topCat')}</div>
+      <div class="topCatV">${t(c.name)} · ₹${fmt(top[1])} <span style="color:var(--muted);font-weight:500">(${Math.round(top[1]/monthTotal*100)}%)</span></div></div></div>`;
   }
 
-  h+=`<button class="addBtn" onclick="openAddExpense()">＋ Add expense</button>`;
+  h+=`<button class="addBtn" onclick="openAddExpense()">＋ ${t('e.add')}</button>`;
 
   // ---- recurring ----
   const recs=S.recurring();
   if(pendingRecurring.length){
     const p=pendingRecurring[0]; const r=recs.find(x=>x.id===p.recId);
     if(r){ const dd=new Date(p.due+'T00:00:00');
-      h+=`<div class="dueBanner" style="margin-top:14px"><div class="dueT">⏰ ${esc(r.name)} is due</div>
-        <div class="dueS">Due ${dd.getDate()} ${MONTHS[dd.getMonth()]} · amount varies, so enter what it came to.</div>
-        <button class="dueBtn" onclick="askVariable('${r.id}')">Enter amount</button></div>`; }
+      h+=`<div class="dueBanner" style="margin-top:14px"><div class="dueT">⏰ ${t('r.dueTitle',{n:esc(r.name)})}</div>
+        <div class="dueS">${dd.getDate()} ${MONTHS[dd.getMonth()]}</div>
+        <button class="dueBtn" onclick="askVariable('${r.id}')">${t('r.enterAmount')}</button></div>`; }
   }
-  h+=`<div class="section">🔁 Recurring</div>`;
+  h+=`<div class="section">🔁 ${t('r.title')}</div>`;
   if(recs.length){
     h+=`<div class="card">`;
     recs.forEach(r=>{
       const c=CAT(r.cat); const dd=new Date(r.nextDue+'T00:00:00');
       h+=`<div class="recRow ${r.active?'':'recPaused'}"><div class="emoji">${c.emoji}</div>
         <div style="flex:1;min-width:0"><div class="recName">${esc(r.name)}</div>
-        <div class="recMeta">${FREQ(r.freq).name} · ${c.name}${r.note?' · '+esc(r.note):''}</div></div>
-        <div class="recAmt"><div class="recAmtV">${r.variable?'Varies':'₹'+fmt(r.amount)}</div>
-        <div class="recNext">${r.active?`next ${dd.getDate()} ${MONTHS[dd.getMonth()]}`:'paused'}</div></div>
+        <div class="recMeta">${t('r.'+r.freq)} · ${t(c.name)}${r.note?' · '+esc(r.note):''}</div></div>
+        <div class="recAmt"><div class="recAmtV">${r.variable?t('r.varies'):'₹'+fmt(r.amount)}</div>
+        <div class="recNext">${r.active?t('r.nextDue',{d:dd.getDate()+' '+MONTHS[dd.getMonth()]}):t('r.paused')}</div></div>
         <div class="recActs">
           <button class="recBtn" onclick="openRecForm('${r.id}')">✏️</button>
           <button class="recBtn" onclick="togglePause('${r.id}')">${r.active?'⏸':'▶️'}</button>
@@ -797,15 +819,15 @@ function renderExpenses(){
     });
     h+=`</div>`;
   } else {
-    h+=`<div class="empty">Add rent, SIP, EMI, credit-card bills and subscriptions once — they'll be added automatically every time they're due.</div>`;
+    h+=`<div class="empty">${t('r.empty')}</div>`;
   }
-  h+=`<button class="addBtn" onclick="openRecForm(null)">＋ Add recurring expense</button>`;
+  h+=`<button class="addBtn" onclick="openRecForm(null)">＋ ${t('r.add')}</button>`;
 
   // filter chips
   const cats=['all',...EXP_CATS.map(c=>c.cat).filter(k=>by[k])];
   if(cats.length>1){
     h+=`<div class="filterRow" style="margin-top:16px">`+cats.map(k=>{
-      const label=k==='all'?'All':CAT(k).emoji+' '+CAT(k).name;
+      const label=k==='all'?t('e.all'):CAT(k).emoji+' '+t(CAT(k).name);
       return `<button class="fchip ${expFilter===k?'on':''}" onclick="setExpFilter('${k}')">${label}</button>`;
     }).join('')+`</div>`;
   }
@@ -817,37 +839,37 @@ function renderExpenses(){
       h+=`<div class="expRow"><div class="emoji">${c.emoji}</div>
         <div style="flex:1;min-width:0"><div class="expName">${esc(e.name)}</div>
         ${e.note?`<div class="expNote">${esc(e.note)}</div>`:''}
-        <div class="expDate">${d.getDate()} ${MONTHS[d.getMonth()]} · ${c.name}</div></div>
+        <div class="expDate">${d.getDate()} ${MONTHS[d.getMonth()]} · ${t(c.name)}</div></div>
         <span class="expAmt">₹${fmt(e.amount)}</span>
         <button class="expDel" onclick="removeExpense('${e.id}')">🗑</button></div>`;
     });
     h+=`</div>`;
   } else {
-    h+=`<div class="empty">${expFilter==='all'?'No expenses this month yet. Tap “Add expense” to log groceries, fuel, eating out and more.':'No expenses in this category this month.'}</div>`;
+    h+=`<div class="empty">${t('e.empty')}</div>`;
   }
   $('body').innerHTML=h;
 }
 function setExpFilter(k){ expFilter=k; renderExpenses(); }
 function openAddExpense(pre){
   pre=pre||{};
-  const chips=EXP_CATS.map((c,i)=>`<button class="chip ${i===0?'on':''}" onclick="pickCat(${i})"><span class="ce">${c.emoji}</span><span class="ct">${c.name}</span></button>`).join('');
+  const chips=EXP_CATS.map((c,i)=>`<button class="chip ${i===0?'on':''}" onclick="pickCat(${i})"><span class="ce">${c.emoji}</span><span class="ct">${t(c.name)}</span></button>`).join('');
   const c0=EXP_CATS[0];
-  showModal(`<div class="modalTitle">Add expense</div>
+  showModal(`<div class="modalTitle">${t('e.add')}</div>
     <div class="chips" id="echips">${chips}</div>
-    <label class="fLabel">What was it for?</label>
-    <input class="fInput" id="eName" value="${esc(pre.name||c0.name)}">
-    <label class="fLabel">Details (optional)</label>
+    <label class="fLabel">${t('e.whatFor')}</label>
+    <input class="fInput" id="eName" value="${esc(pre.cat?t(CAT(pre.cat).name):t(c0.name))}">
+    <label class="fLabel">${t('e.details')}</label>
     <input class="fInput" id="eNote" placeholder="${c0.ph}" value="${esc(pre.note||'')}">
     <div style="display:flex;gap:10px">
-      <div style="flex:1"><label class="fLabel">Amount (₹)</label><input class="fInput" id="eAmt" inputmode="numeric" placeholder="1200" value="${pre.amount||''}" autofocus></div>
-      <div style="flex:1"><label class="fLabel">Date</label><input class="fInput" id="eDate" type="date" value="${todayKey()}"></div></div>
-    <div class="modalBtns"><button class="cancelBtn" onclick="closeModal()">Cancel</button><button class="saveBtn" onclick="saveExpense()">Add</button></div>`);
+      <div style="flex:1"><label class="fLabel">${t('e.amount')}</label><input class="fInput" id="eAmt" inputmode="numeric" placeholder="1200" value="${pre.amount||''}" autofocus></div>
+      <div style="flex:1"><label class="fLabel">${t('e.date')}</label><input class="fInput" id="eDate" type="date" value="${todayKey()}"></div></div>
+    <div class="modalBtns"><button class="cancelBtn" onclick="closeModal()">${t('k.cancel')}</button><button class="saveBtn" onclick="saveExpense()">${t('k.add')}</button></div>`);
   window._ec=0;
 }
 function pickCat(i){
   window._ec=i; const c=EXP_CATS[i];
   document.querySelectorAll('#echips .chip').forEach((x,idx)=>x.classList.toggle('on',idx===i));
-  $('eName').value=c.name; $('eNote').placeholder=c.ph;
+  $('eName').value=t(c.name); $('eNote').placeholder=c.ph;
 }
 function saveExpense(){
   const c=EXP_CATS[window._ec||0];
@@ -877,7 +899,7 @@ function pieSVG(slices,size){
 
 // ============ SUMMARY ============
 function renderSummary(){
-  setTagline('Your household spending');
+  setTagline(t('sm.subtitle'));
   const today=todayKey(); const period=sumRange==='month'?monthOf(today):yearOf(today);
   const pLabel=sumRange==='month'?`${MONTHS[new Date().getMonth()]} ${new Date().getFullYear()}`:`${new Date().getFullYear()}`;
   const vendors=S.vendors(),entries=S.entries(),staff=S.staff(),att=S.att(),adv=S.advances(),expenses=S.expenses();
@@ -889,48 +911,48 @@ function renderSummary(){
   const grand=vGrand+sGrand+eGrand;
 
   let h=`<div class="toggle">
-    <button class="tBtn ${sumRange==='month'?'on':''}" onclick="setRange('month')">This Month</button>
-    <button class="tBtn ${sumRange==='year'?'on':''}" onclick="setRange('year')">This Year</button></div>
-    <div class="grandCard"><div class="totLabel">${pLabel.toUpperCase()} · TOTAL</div>
+    <button class="tBtn ${sumRange==='month'?'on':''}" onclick="setRange('month')">${t('sm.thisMonth')}</button>
+    <button class="tBtn ${sumRange==='year'?'on':''}" onclick="setRange('year')">${t('sm.thisYear')}</button></div>
+    <div class="grandCard"><div class="totLabel">${pLabel} · ${t('sm.total')}</div>
     <div class="grandVal">₹${fmt(grand)}</div>
     <div class="totSub">Vendors ₹${fmt(vGrand)} · Staff ₹${fmt(sGrand)} · Expenses ₹${fmt(eGrand)}</div></div>`;
 
   // ---- Overall pie (Vendors / Staff / each expense category) ----
   if(grand>0){
     const slices=[];
-    if(vGrand>0) slices.push({name:'Vendors',value:vGrand,color:'#2D5C8F'});
-    if(sGrand>0) slices.push({name:'Staff',value:sGrand,color:'#118AB2'});
-    Object.entries(by).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=>{ const c=CAT(k); slices.push({name:c.name,value:v,color:c.color}); });
-    h+=`<div class="section">📊 Where the money went</div>
+    if(vGrand>0) slices.push({name:t('tab.vendors'),value:vGrand,color:'#2D5C8F'});
+    if(sGrand>0) slices.push({name:t('tab.staff'),value:sGrand,color:'#118AB2'});
+    Object.entries(by).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=>{ const c=CAT(k); slices.push({name:t(c.name),value:v,color:c.color}); });
+    h+=`<div class="section">📊 ${t('sm.whereMoney')}</div>
       <div class="card"><div class="pieWrap">${pieSVG(slices)}
       <div class="legend">${slices.map(s=>`<div class="lgRow"><span class="lgDot" style="background:${s.color}"></span>
         <span class="lgName">${s.name}</span><span class="lgPct">${Math.round(s.value/grand*100)}%</span></div>`).join('')}</div></div></div>`;
   }
 
   if(vendors.length){
-    h+=`<div class="section">📦 Vendors</div><div class="card">`;
+    h+=`<div class="section">📦 ${t('tab.vendors')}</div><div class="card">`;
     vendors.forEach(v=>{ h+=`<div class="row"><span class="rowName">${v.emoji}  ${esc(v.name)}</span><span class="rowVal">₹${fmt(vTot[v.id]||0)}</span></div>`; });
     h+=`</div>`;
   }
   if(staff.length){
-    h+=`<div class="section">👥 Staff</div><div class="card">`;
+    h+=`<div class="section">👥 ${t('tab.staff')}</div><div class="card">`;
     sRows.forEach(r=>{ const sub=(r.sal.deduction>0||r.sal.adv>0)?`<div class="rowSub">base ₹${fmt(r.sal.base)}${r.sal.deduction>0?' · leave −₹'+fmt(r.sal.deduction):''}${r.sal.adv>0?' · adv −₹'+fmt(r.sal.adv):''}</div>`:'';
       h+=`<div class="row"><div><span class="rowName">${r.st.emoji}  ${esc(r.st.name)}</span>${sub}</div><span class="rowVal">₹${fmt(r.sal.net)}</span></div>`; });
     h+=`</div>`;
   }
   if(eGrand>0){
-    h+=`<div class="section">💰 Expenses by category</div><div class="card">`;
+    h+=`<div class="section">💰 ${t('sm.byCategory')}</div><div class="card">`;
     Object.entries(by).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=>{ const c=CAT(k);
-      h+=`<div class="row"><span class="rowName">${c.emoji}  ${c.name}</span>
+      h+=`<div class="row"><span class="rowName">${c.emoji}  ${t(c.name)}</span>
         <span class="rowVal">₹${fmt(v)} <span style="color:var(--muted);font-weight:500;font-size:11.5px">${Math.round(v/eGrand*100)}%</span></span></div>`; });
     h+=`</div>`;
   }
   if(grand>0){
-    h+=`<button class="waBtn" onclick="shareWhatsApp()">📲 Send summary on WhatsApp</button>
-        <button class="upiBtn" onclick="openUPI(${grand})">💳 Pay via UPI</button>
-        <button class="pdfBtn" onclick="downloadPDF()">📄 Download PDF report</button>`;
+    h+=`<button class="waBtn" onclick="shareWhatsApp()">📲 ${t('sm.whatsapp')}</button>
+        <button class="upiBtn" onclick="openUPI(${grand})">💳 ${t('sm.upi')}</button>
+        <button class="pdfBtn" onclick="downloadPDF()">📄 ${t('sm.pdf')}</button>`;
   } else {
-    h+=`<div class="empty">No entries yet for ${pLabel}. Add vendors, staff or expenses to see your summary here.</div>`;
+    h+=`<div class="empty">${t('sm.empty',{p:pLabel})}</div>`;
   }
   $('body').innerHTML=h;
 }
@@ -947,7 +969,7 @@ function buildBill(){
   let m=`🏠 GharKhata — ${pLabel}\n\n`;
   if(vGrand){ m+='📦 Vendors:\n'; vendors.forEach(v=>{ if(vTot[v.id]) m+=`• ${v.name}: ₹${fmt(vTot[v.id])}\n`; }); m+=`Subtotal: ₹${fmt(vGrand)}\n\n`; }
   if(sGrand){ m+='👥 Staff:\n'; sRows.forEach(r=>{ m+=`• ${r.st.name}: ₹${fmt(r.sal.net)}\n`; }); m+=`Subtotal: ₹${fmt(sGrand)}\n\n`; }
-  if(eGrand){ m+='💰 Expenses:\n'; Object.entries(by).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=>{ m+=`• ${CAT(k).name}: ₹${fmt(v)} (${Math.round(v/eGrand*100)}%)\n`; }); m+=`Subtotal: ₹${fmt(eGrand)}\n\n`; }
+  if(eGrand){ m+='💰 '+t('tab.expenses')+':\n'; Object.entries(by).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=>{ m+=`• ${t(CAT(k).name)}: ₹${fmt(v)} (${Math.round(v/eGrand*100)}%)\n`; }); m+=`Subtotal: ₹${fmt(eGrand)}\n\n`; }
   m+=`💰 Total: ₹${fmt(grand)}`;
   return m;
 }
@@ -960,48 +982,52 @@ function openUPI(amount){
 // ============ SETTINGS ============
 function openSettings(){
   const st=S.settings(); const pref=st.theme||'auto'; const code=S.code();
-  showModal(`<div class="modalTitle">Settings</div>
-    <div class="grp">Theme</div>
-    <div class="segRow">${['auto','light','dark'].map(p=>`<button class="seg ${pref===p?'on':''}" onclick="setTheme('${p}')">${p==='auto'?'Auto':p==='light'?'Light':'Dark'}</button>`).join('')}</div>
+  const langChips=LANGS.map(L=>`<button class="seg ${getLang()===L.code?'on':''}" style="flex:0 0 auto;padding:9px 14px;border-radius:20px" onclick="setLang('${L.code}')">${L.name}</button>`).join('');
+  showModal(`<div class="modalTitle">${t('st.title')}</div>
+    <div class="grp">${t('st.language')}</div>
+    <div class="segRow" style="flex-wrap:wrap">${langChips}</div>
 
-    <div class="grp">Auto-fill entries</div>
+    <div class="grp">${t('st.theme')}</div>
+    <div class="segRow">      ${['auto','light','dark'].map(p=>`<button class="seg ${pref===p?'on':''}" onclick="setTheme('${p}')">${p==='auto'?t('st.auto'):p==='light'?t('st.light'):t('st.dark')}</button>`).join('')}
+
+    <div class="grp">${t('st.autofill')}</div>
     <div class="segRow">
       <button class="seg ${st.autoFill!==false?'on':''}" onclick="setAutoFill(true)">On</button>
       <button class="seg ${st.autoFill===false?'on':''}" onclick="setAutoFill(false)">Off</button></div>
     <div class="hint">Any day you haven't entered gets your usual quantities (it never overwrites what you typed — change them any time).</div>
 
-    <div class="grp">Reminder — 12 PM</div>
+    <div class="grp">${t('st.reminder')}</div>
     <div class="segRow">
       <button class="seg ${st.reminder!==false?'on':''}" onclick="setReminder(true)">On</button>
       <button class="seg ${st.reminder===false?'on':''}" onclick="setReminder(false)">Off</button></div>
     <div class="hint">A daily nudge to fill today's entries. Works on Android/Chrome. On iPhone, Apple doesn't allow web notifications — so the Android app is the one that can actually buzz you.</div>
 
-    <div class="grp">Family sync</div>
+    <div class="grp">${t('st.familySync')}</div>
     ${!SYNC_READY ? `<div class="hint">Sync isn't configured yet. Add your Supabase URL & key in index.html (see SUPABASE-SETUP.sql).</div>` :
       code ? `
       <div class="codeBox"><div class="codeVal">${code}</div><div class="codeHint">Both phones with this code share the same ledger, live.</div></div>
       <div class="segRow" style="margin-top:10px">
-        <button class="seg" onclick="copyCode()">📋 Copy</button>
-        <button class="seg" onclick="shareCode()">📲 Share</button>
+        <button class="seg" onclick="copyCode()">📋 ${t('st.copy')}</button>
+        <button class="seg" onclick="shareCode()">📲 ${t('st.share')}</button>
       </div>
       <div class="segRow" style="margin-top:8px">
-        <button class="seg" style="color:var(--red);border-color:var(--red)" onclick="removeCode()">Remove code</button>
+        <button class="seg" style="color:var(--red);border-color:var(--red)" onclick="removeCode()">${t('st.removeCode')}</button>
       </div>
       <div class="hint">Removing the code stops syncing. Your data stays on this phone. You can enter a different code afterwards.</div>` : `
       <div class="segRow">
-        <button class="seg" onclick="createCode()">✨ Create code</button>
-        <button class="seg" onclick="enterCode()">🔑 Enter code</button>
+        <button class="seg" onclick="createCode()">✨ ${t('st.createCode')}</button>
+        <button class="seg" onclick="enterCode()">🔑 ${t('st.enterCode')}</button>
       </div>
       <div class="hint">Create a code on one phone, then enter the same code on the other. No login needed — the code is the key, so only share it with family.</div>`}
 
-    <div class="grp">Backup & restore</div>
+    <div class="grp">${t('st.backup')} & ${t('st.restore')}</div>
     <div class="segRow">
-      <button class="seg" onclick="exportData()">⬆ Backup</button>
-      <button class="seg" onclick="document.getElementById('impF').click()">⬇ Restore</button></div>
+      <button class="seg" onclick="exportData()">⬆ ${t('st.backup')}</button>
+      <button class="seg" onclick="document.getElementById('impF').click()">⬇ ${t('st.restore')}</button></div>
     <div class="hint">Downloads a file you can send yourself on WhatsApp. Restore loads it back.</div>
 
     <div class="installTip">📲 <b>Add to Home Screen:</b> iPhone Safari → Share → “Add to Home Screen”. Opens fullscreen like a real app (and keeps your data safe).</div>
-    <div class="modalBtns"><button class="saveBtn" onclick="closeModal()">Done</button></div>
+    <div class="modalBtns"><button class="saveBtn" onclick="closeModal()">${t('st.done')}</button></div>
     <input type="file" id="impF" accept="application/json" style="display:none" onchange="importData(event)">`);
 }
 function setTheme(p){ const s=S.settings(); s.theme=p; S.setSettings(s); applyTheme(); openSettings(); }
@@ -1140,34 +1166,34 @@ function openRecForm(recId){
   const r = recId ? S.recurring().find(x=>x.id===recId) : null;
   const catIdx = r ? Math.max(0,REC_CATS.findIndex(c=>c.cat===r.cat)) : 0;
   const chips=REC_CATS.map((c,i)=>`<button class="chip ${i===catIdx?'on':''}" onclick="pickRCat(${i})"><span class="ce">${c.emoji}</span><span class="ct">${c.name}</span></button>`).join('');
-  const freqs=FREQS.map(f=>`<button class="seg ${ (r?r.freq:'monthly')===f.f?'on':''}" id="rf_${f.f}" onclick="pickFreq('${f.f}')">${f.name}</button>`).join('');
-  showModal(`<div class="modalTitle">${r?'Edit':'Add'} recurring expense</div>
+  const freqs=FREQS.map(f=>`<button class="seg ${ (r?r.freq:'monthly')===f.f?'on':''}" id="rf_${f.f}" onclick="pickFreq('${f.f}')">${t('r.'+f.f)}</button>`).join('');
+  showModal(`<div class="modalTitle">${r?t('k.edit'):t('k.add')} — ${t('r.title')}</div>
     <div class="chips" id="rchips">${chips}</div>
-    <label class="fLabel">Name</label>
+    <label class="fLabel">${t('k.name')}</label>
     <input class="fInput" id="rName" placeholder="e.g. House rent, SIP, Car EMI" value="${r?esc(r.name):''}">
-    <label class="fLabel">Details (optional)</label>
+    <label class="fLabel">${t('e.details')}</label>
     <input class="fInput" id="rNote" placeholder="${REC_CATS[catIdx].ph}" value="${r?esc(r.note||''):''}">
 
-    <div class="grp">Amount</div>
+    <div class="grp">${t('e.amount')}</div>
     <div class="segRow">
-      <button class="seg ${r&&r.variable?'':'on'}" id="rv_fixed" onclick="pickVar(false)">Fixed</button>
-      <button class="seg ${r&&r.variable?'on':''}" id="rv_var" onclick="pickVar(true)">Varies</button>
+      <button class="seg ${r&&r.variable?'':'on'}" id="rv_fixed" onclick="pickVar(false)">${t('r.fixed')}</button>
+      <button class="seg ${r&&r.variable?'on':''}" id="rv_var" onclick="pickVar(true)">${t('r.varies')}</button>
     </div>
     <div id="rAmtWrap" style="${r&&r.variable?'display:none':''}">
-      <label class="fLabel">Amount (₹)</label>
+      <label class="fLabel">${t('e.amount')}</label>
       <input class="fInput" id="rAmt" inputmode="numeric" placeholder="15000" value="${r&&!r.variable?r.amount:''}">
     </div>
     <div id="rVarHint" class="hint" style="${r&&r.variable?'':'display:none'}">Each time it's due, the app will ask you for the amount (perfect for credit-card bills or electricity).</div>
 
-    <div class="grp">Repeats</div>
+    <div class="grp">${t('r.repeats')}</div>
     <div class="segRow" style="flex-wrap:wrap">${freqs}</div>
 
-    <label class="fLabel">${r?'Next due date':'First due date'}</label>
+    <label class="fLabel">${t('e.date')}</label>
     <input class="fInput" id="rDate" type="date" value="${r?r.nextDue:todayKey()}">
 
     <div class="modalBtns">
-      <button class="cancelBtn" onclick="closeModal()">Cancel</button>
-      <button class="saveBtn" onclick="saveRec(${r?`'${r.id}'`:'null'})">${r?'Save':'Add'}</button>
+      <button class="cancelBtn" onclick="closeModal()">${t('k.cancel')}</button>
+      <button class="saveBtn" onclick="saveRec(${r?`'${r.id}'`:'null'})">${r?t('k.save'):t('k.add')}</button>
     </div>`);
   window._rc=catIdx; window._rf=r?r.freq:'monthly'; window._rvar=r?!!r.variable:false;
 }
@@ -1198,13 +1224,13 @@ function saveRec(recId){
 function askVariable(recId){
   const r=S.recurring().find(x=>x.id===recId); if(!r) return;
   const d=new Date(r.nextDue+'T00:00:00');
-  showModal(`<div class="modalTitle">${esc(r.name)} — amount?</div>
-    <div class="hint">Due ${d.getDate()} ${MONTHS[d.getMonth()]}. This one varies each time, so enter what it came to.</div>
-    <label class="fLabel">Amount (₹)</label>
+  showModal(`<div class="modalTitle">${esc(r.name)} — ${t('e.amount')}</div>
+    <div class="hint">${d.getDate()} ${MONTHS[d.getMonth()]}</div>
+    <label class="fLabel">${t('e.amount')}</label>
     <input class="fInput" id="vAmt" inputmode="numeric" placeholder="e.g. 4820" autofocus>
     <div class="modalBtns">
-      <button class="cancelBtn" onclick="skipOccurrence('${recId}'); closeModal();">Skip this time</button>
-      <button class="saveBtn" onclick="submitVar('${recId}')">Add</button>
+      <button class="cancelBtn" onclick="skipOccurrence('${recId}'); closeModal();">${t('r.skipThisTime')}</button>
+      <button class="saveBtn" onclick="submitVar('${recId}')">${t('k.add')}</button>
     </div>`,true);
 }
 function submitVar(recId){
@@ -1289,6 +1315,7 @@ function render(){
   else if(tab==='summary') renderSummary();
 }
 applyTheme();
+applyLangFont();
 if(window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',applyTheme);
 runAutoFill();
 scheduleWebReminder();
